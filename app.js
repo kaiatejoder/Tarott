@@ -99,3 +99,146 @@ window.TAROT = { CARDS };
 
 /* Quick sanity check in dev console */
 console.assert(CARDS.length === 78, `Expected 78 cards, got ${CARDS.length}`);
+
+/* =============================================================
+   app.js — Task 2: Deck Logic
+   State management, shuffle, draw, card element creation,
+   return-to-deck, and event listeners.
+   ============================================================= */
+
+/* ── State ── */
+let deck = [];        // cards remaining in deck (shuffle order)
+let drawnCards = [];  // cards currently on the tapete
+
+/* ── initDeck ── */
+function initDeck() {
+  deck = [...window.TAROT.CARDS];
+  drawnCards = [];
+
+  const deckCountEl = document.getElementById('deckCount');
+  if (deckCountEl) deckCountEl.textContent = deck.length;
+
+  const container = document.getElementById('cardsContainer');
+  if (container) {
+    container.querySelectorAll('.tarot-card').forEach(el => el.remove());
+  }
+}
+
+/* ── shuffleDeck ── */
+function shuffleDeck() {
+  // Fisher-Yates in-place shuffle
+  for (let i = deck.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [deck[i], deck[j]] = [deck[j], deck[i]];
+  }
+
+  // 3% chance: a card falls while shuffling
+  if (Math.random() < 0.03 && deck.length > 0) {
+    const fallenEl = drawCard();
+    if (fallenEl) {
+      fallenEl.classList.add('fell');
+    }
+  }
+
+  // Animate the deck element
+  const deckEl = document.getElementById('deck');
+  if (deckEl) {
+    deckEl.classList.add('shuffling');
+    setTimeout(() => deckEl.classList.remove('shuffling'), 600);
+  }
+
+  const deckCountEl = document.getElementById('deckCount');
+  if (deckCountEl) deckCountEl.textContent = deck.length;
+}
+
+/* ── drawCard ── */
+function drawCard() {
+  if (deck.length === 0) {
+    alert('La baraja está vacía');
+    return null;
+  }
+
+  const card = deck.pop();
+  const reversed = Math.random() < 0.5;
+
+  drawnCards.push({ ...card, reversed });
+
+  const cardEl = createCardElement(card, reversed);
+  const container = document.getElementById('cardsContainer');
+  if (container) container.appendChild(cardEl);
+
+  const deckCountEl = document.getElementById('deckCount');
+  if (deckCountEl) deckCountEl.textContent = deck.length;
+
+  return cardEl;
+}
+
+/* ── createCardElement ── */
+function createCardElement(card, reversed) {
+  const container = document.getElementById('cardsContainer');
+  const containerRect = container
+    ? container.getBoundingClientRect()
+    : { width: 300, height: 400 };
+
+  // Center of the container plus a small random offset
+  const offsetX = (Math.random() * 100) - 50;  // ±50 px
+  const offsetY = (Math.random() * 60) - 30;   // ±30 px
+  const left = containerRect.width / 2 + offsetX;
+  const top  = containerRect.height / 2 + offsetY;
+
+  const el = document.createElement('div');
+  el.className = 'tarot-card' + (reversed ? ' reversed' : '');
+  el.dataset.id = card.id;
+  el.dataset.reversed = reversed;
+
+  // JS-set positioning (only acceptable use of inline styles per spec)
+  el.style.left = left + 'px';
+  el.style.top  = top  + 'px';
+
+  // Store initial position for drag logic (Task 3)
+  el.dataset.startX = left;
+  el.dataset.startY = top;
+
+  const img = document.createElement('img');
+  img.src = card.img;
+  img.alt = card.name;
+  img.draggable = false;
+
+  el.appendChild(img);
+  return el;
+}
+
+/* ── returnCardToDeck ── */
+function returnCardToDeck(cardElement) {
+  const id = cardElement.dataset.id;
+  const card = window.TAROT.CARDS.find(c => c.id === id);
+
+  if (card) {
+    deck.unshift(card);  // return to top (beginning) of deck
+  }
+
+  // Remove from drawnCards tracking array
+  drawnCards = drawnCards.filter(c => c.id !== id);
+
+  cardElement.remove();
+
+  const deckCountEl = document.getElementById('deckCount');
+  if (deckCountEl) deckCountEl.textContent = deck.length;
+}
+
+/* ── Re-expose everything on window.TAROT ── */
+window.TAROT = {
+  CARDS,
+  initDeck,
+  shuffleDeck,
+  drawCard,
+  createCardElement,
+  returnCardToDeck,
+};
+
+/* ── Event listeners ── */
+document.getElementById('btnShuffle').addEventListener('click', shuffleDeck);
+document.getElementById('btnDraw').addEventListener('click', drawCard);
+
+// Initialize on load
+document.addEventListener('DOMContentLoaded', initDeck);
