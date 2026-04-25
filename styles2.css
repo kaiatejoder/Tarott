@@ -1,9 +1,4 @@
 /* ============================================================
-   Google Fonts — Orbitron (cyber display) + Space Mono (terminal UI)
-   ============================================================ */
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
-
-/* ============================================================
    CSS Custom Properties — "CRYSTAL VOID"
    Cybercore brutalism — red / white / black / orb
    ============================================================ */
@@ -15,14 +10,14 @@
   --off-white:      #e8e0e0;
 
   /* Red spectrum */
-  --red:            #dc0000;
-  --red-bright:     #ff1a1a;
-  --red-deep:       #6b0000;
+  --red:            #cc0000;
+  --red-bright:     #ff2222;
+  --red-deep:       #2b0505;
   --red-blood:      #1a0000;
 
   /* Glow */
-  --glow-red:       rgba(220, 0, 0, 0.7);
-  --glow-red-soft:  rgba(220, 0, 0, 0.3);
+  --glow-red:       rgba(200, 0, 0, 0.7);
+  --glow-red-soft:  rgba(200, 0, 0, 0.3);
   --glow-white:     rgba(255, 255, 255, 0.55);
 
   /* Orb crystal effects */
@@ -34,11 +29,13 @@
   /* Card dimensions — same as default so switching is seamless */
   --card-width:     120px;
   --card-height:    210px;
-  --card-radius:    4px;   /* brutalism = minimal radius */
+  --card-radius:    4px;
 
-  /* Typography */
-  --font-display:   'Orbitron', 'Space Mono', monospace;
-  --font-ui:        'Space Mono', 'Courier New', monospace;
+  /* Typography — Helvetica Neue system stack, no web font needed */
+  --font-display:   'Helvetica Neue', HelveticaNeue, 'Helvetica Now Display',
+                    Helvetica, 'Arial Nova', Arial, sans-serif;
+  --font-ui:        'Helvetica Neue', HelveticaNeue, 'Helvetica Now Text',
+                    Helvetica, Arial, sans-serif;
 
   /* Brutalist hard shadow (no blur — offset only) */
   --hard-red:       3px 3px 0 var(--red);
@@ -312,24 +309,35 @@ button:focus {
   user-select: none;
   transition: transform 0.12s ease;
 
-  /* Card-back: dark grid on black */
+  /* Card-back: inset border frame + diagonal stripes */
   background:
-    linear-gradient(
-      rgba(200, 0, 0, 0.09) 1px,
-      transparent 1px
+    /* Inset frame — top edge */
+    linear-gradient(var(--red), var(--red))
+      9px 9px / calc(100% - 18px) 1.5px no-repeat,
+    /* Inset frame — bottom edge */
+    linear-gradient(var(--red), var(--red))
+      9px calc(100% - 10px) / calc(100% - 18px) 1.5px no-repeat,
+    /* Inset frame — left edge */
+    linear-gradient(var(--red), var(--red))
+      9px 9px / 1.5px calc(100% - 18px) no-repeat,
+    /* Inset frame — right edge */
+    linear-gradient(var(--red), var(--red))
+      calc(100% - 10px) 9px / 1.5px calc(100% - 18px) no-repeat,
+    /* Diagonal stripes — fine, dark red */
+    repeating-linear-gradient(
+      45deg,
+      rgba(180, 0, 0, 0.14),
+      rgba(180, 0, 0, 0.14) 1px,
+      transparent 1px,
+      transparent 9px
     ),
-    linear-gradient(
-      90deg,
-      rgba(200, 0, 0, 0.09) 1px,
-      transparent 1px
-    ),
+    /* Central red radial glow */
     radial-gradient(
-      circle at 50% 50%,
-      rgba(150, 0, 0, 0.22) 0%,
-      transparent 55%
+      ellipse 60% 55% at 50% 50%,
+      rgba(140, 0, 0, 0.28) 0%,
+      transparent 65%
     ),
     var(--void);
-  background-size: 14px 14px, 14px 14px, 100% 100%, 100% 100%;
 
   /* Neo-brutalist hard shadow: white + red offset stack */
   animation: deckGlow 3s ease-in-out infinite;
@@ -388,15 +396,19 @@ button:focus {
    Deck symbol — red glyph inside the card
    ============================================================ */
 .deck-back-label {
-  font-size: 2rem;
-  color: var(--red);
+  font-family: var(--font-display);
+  font-size: 3.2rem;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -0.02em;
+  line-height: 1;
   position: relative;
   z-index: 1;
   user-select: none;
   text-shadow:
-    0 0 12px var(--glow-red),
-    0 0 30px rgba(220, 0, 0, 0.4);
-  font-family: var(--font-display);
+    0 0 1px var(--white),
+    0 0 16px rgba(200, 0, 0, 0.7),
+    0 0 40px rgba(200, 0, 0, 0.3);
 }
 
 /* ============================================================
