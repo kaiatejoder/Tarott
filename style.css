@@ -1,15 +1,27 @@
 /* ============================================================
+   Google Fonts
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&display=swap');
+
+/* ============================================================
    CSS Custom Properties
    ============================================================ */
 :root {
-  --color-tapete:        #2d6a4f;
-  --color-tapete-dark:   #1b4332;
-  --color-btn-primary:   #6c3b1f;
-  --color-btn-secondary: #3d405b;
-  --font-main:           'Georgia', serif;
-  --card-width:          120px;
-  --card-height:         210px;
-  --card-radius:         8px;
+  --color-tapete:         #1a3a2a;
+  --color-tapete-texture: #163224;
+  --color-gold:           #c9a84c;
+  --color-gold-light:     #e8c97a;
+  --color-text:           #f0e6d3;
+  --color-text-muted:     #a89880;
+  --color-card-shadow:    rgba(0, 0, 0, 0.6);
+  --color-btn-bg:         #0d1f17;
+  --color-btn-border:     #c9a84c;
+  --color-context-bg:     #0d1f17;
+  --color-context-border: #c9a84c;
+  --font-main:            'Cinzel', Georgia, serif;
+  --card-width:           120px;
+  --card-height:          210px;
+  --card-radius:          8px;
 }
 
 /* ============================================================
@@ -23,12 +35,12 @@
 
 body {
   font-family: var(--font-main);
-  background-color: #111;
-  color: #f0e6d3;
-  min-height: 100vh;
+  background-color: #0a0f0b;
+  color: var(--color-text);
+  height: 100vh;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
 /* ============================================================
@@ -36,74 +48,107 @@ body {
    ============================================================ */
 .site-header {
   width: 100%;
-  padding: 0.75rem 1.5rem;
-  background-color: var(--color-tapete-dark);
+  padding: 0.6rem 1.5rem;
+  background-color: #0a0f0b;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.2);
   text-align: center;
+  flex-shrink: 0;
+  z-index: 50;
 }
 
 .site-title {
-  font-size: 1.8rem;
-  letter-spacing: 0.15em;
+  font-family: var(--font-main);
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
+  color: var(--color-gold);
+  text-shadow: 0 0 20px rgba(201, 168, 76, 0.3);
 }
 
 /* ============================================================
    Controls Bar
    ============================================================ */
 .controls {
-  display: flex;
-  gap: 1rem;
-  padding: 0.75rem 1.5rem;
-  background-color: #1a1a1a;
+  position: relative;
   width: 100%;
+  display: flex;
+  flex-direction: row;
   justify-content: center;
-}
-
-#btnShuffle {
-  background-color: var(--color-btn-secondary);
-  color: #f0e6d3;
-  border: 2px solid #f0e6d3;
-  padding: 0.5rem 1.25rem;
-  font-family: var(--font-main);
-  font-size: 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-#btnDraw {
-  background-color: var(--color-btn-primary);
-  color: #f0e6d3;
-  border: 2px solid #f0e6d3;
-  padding: 0.5rem 1.25rem;
-  font-family: var(--font-main);
-  font-size: 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-#btnShuffle:hover,
-#btnDraw:hover {
-  opacity: 0.85;
-}
-
-#btnShuffle:active,
-#btnDraw:active {
-  opacity: 0.7;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 24px;
+  background: rgba(10, 15, 11, 0.92);
+  border-bottom: 1px solid rgba(201, 168, 76, 0.25);
+  flex-shrink: 0;
+  z-index: 100;
 }
 
 /* ============================================================
-   Tapete (Reading Table / Green Felt Mat)
+   Buttons
+   ============================================================ */
+.controls button,
+button {
+  font-family: var(--font-main);
+  padding: 10px 28px;
+  border: 1.5px solid var(--color-gold);
+  background: transparent;
+  color: var(--color-gold);
+  border-radius: 4px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+
+.controls button:hover,
+button:hover {
+  background: var(--color-gold);
+  color: var(--color-btn-bg);
+}
+
+.controls button:active,
+button:active,
+.controls button:focus,
+button:focus {
+  box-shadow: 0 0 12px rgba(201, 168, 76, 0.4);
+  outline: none;
+}
+
+/* ============================================================
+   Tapete (Reading Table)
    ============================================================ */
 .tapete {
   position: relative;
   width: 100%;
   flex: 1;
-  min-height: 600px;
-  background-color: var(--color-tapete);
-  background-image:
-    radial-gradient(ellipse at center, var(--color-tapete) 60%, var(--color-tapete-dark) 100%);
   overflow: hidden;
-  padding: 1.5rem;
+  background-color: var(--color-tapete);
+  /* Subtle noise grain via layered micro-gradients */
+  background-image:
+    /* Vignette: darker at edges, lighter center */
+    radial-gradient(
+      ellipse at 50% 50%,
+      rgba(30, 70, 50, 0.45) 0%,
+      rgba(10, 20, 14, 0.75) 100%
+    ),
+    /* Fine diagonal grain lines for texture */
+    repeating-linear-gradient(
+      135deg,
+      transparent,
+      transparent 3px,
+      rgba(0, 0, 0, 0.04) 3px,
+      rgba(0, 0, 0, 0.04) 4px
+    ),
+    /* Subtle horizontal weave */
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 5px,
+      rgba(255, 255, 255, 0.015) 5px,
+      rgba(255, 255, 255, 0.015) 6px
+    );
 }
 
 /* ============================================================
@@ -116,37 +161,107 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
+  z-index: 10;
 }
 
+/* ============================================================
+   Deck
+   ============================================================ */
 .deck {
+  position: relative;
   width: var(--card-width);
   height: var(--card-height);
-  background-color: #1a1a2e;
-  border: 2px solid #f0e6d3;
   border-radius: var(--card-radius);
+  border: 2px solid var(--color-gold);
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  box-shadow: 3px 3px 0 #000, 6px 6px 0 #111, 9px 9px 0 #1a1a1a;
-}
-
-.deck-back-label {
-  font-size: 2.5rem;
-  color: #f0e6d3;
+  /* Multi-layer shadow to simulate card stack depth */
+  box-shadow:
+    2px 2px 0 1px rgba(201, 168, 76, 0.15),
+    4px 4px 0 1px rgba(0, 0, 0, 0.5),
+    6px 6px 0 1px rgba(201, 168, 76, 0.1),
+    8px 8px 0 1px rgba(0, 0, 0, 0.4),
+    0 16px 40px rgba(0, 0, 0, 0.6);
+  transition: box-shadow 0.2s, transform 0.2s;
   user-select: none;
 }
 
+.deck:hover {
+  box-shadow:
+    2px 2px 0 1px rgba(201, 168, 76, 0.2),
+    4px 4px 0 1px rgba(0, 0, 0, 0.5),
+    6px 6px 0 1px rgba(201, 168, 76, 0.15),
+    8px 8px 0 1px rgba(0, 0, 0, 0.4),
+    0 20px 50px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(201, 168, 76, 0.4);
+}
+
+/* Pseudo-element card stack: second card behind */
+.deck::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--card-radius);
+  border: 1.5px solid rgba(201, 168, 76, 0.4);
+  background: var(--color-tapete-texture);
+  transform: translate(3px, 3px);
+  z-index: -1;
+}
+
+/* Third card further behind */
+.deck::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--card-radius);
+  border: 1.5px solid rgba(201, 168, 76, 0.25);
+  background: var(--color-tapete-texture);
+  transform: translate(6px, 6px);
+  z-index: -2;
+}
+
+/* Decorative card-back pattern */
+#deck {
+  background:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 8px,
+      rgba(201, 168, 76, 0.05) 8px,
+      rgba(201, 168, 76, 0.05) 9px
+    ),
+    var(--color-tapete-texture);
+}
+
+/* The triquetra/symbol inside the deck */
+.deck-back-label {
+  font-size: 2.4rem;
+  color: var(--color-gold);
+  opacity: 0.7;
+  user-select: none;
+  text-shadow: 0 0 12px rgba(201, 168, 76, 0.5);
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================================
+   Deck Count Badge
+   ============================================================ */
 .deck-count {
-  font-size: 0.9rem;
-  background-color: var(--color-tapete-dark);
-  color: #f0e6d3;
-  border: 1px solid #f0e6d3;
+  display: inline-block;
+  font-family: var(--font-main);
+  font-size: 0.75rem;
+  color: var(--color-gold);
+  background: rgba(13, 31, 23, 0.85);
+  border: 1px solid rgba(201, 168, 76, 0.4);
   border-radius: 12px;
-  padding: 0.2rem 0.6rem;
+  padding: 2px 10px;
   min-width: 2.5rem;
   text-align: center;
+  letter-spacing: 0.05em;
 }
 
 /* ============================================================
@@ -154,7 +269,10 @@ body {
    ============================================================ */
 #cardsContainer {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
 }
 
@@ -166,18 +284,12 @@ body {
   width: var(--card-width);
   height: var(--card-height);
   border-radius: var(--card-radius);
-  border: 2px solid #f0e6d3;
-  overflow: hidden;
+  box-shadow: 0 8px 24px var(--color-card-shadow);
   cursor: grab;
-  pointer-events: all;
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
-  transition: box-shadow 0.15s ease;
   user-select: none;
-}
-
-.tarot-card:active {
-  cursor: grabbing;
-  box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.8);
+  transition: box-shadow 0.15s ease;
+  overflow: hidden;
+  pointer-events: all;
 }
 
 .tarot-card img {
@@ -185,10 +297,61 @@ body {
   height: 100%;
   object-fit: cover;
   display: block;
+  pointer-events: none;
+}
+
+.tarot-card:hover {
+  box-shadow:
+    0 12px 36px rgba(0, 0, 0, 0.8),
+    0 0 0 1.5px var(--color-gold);
 }
 
 .tarot-card.reversed {
   transform: rotate(180deg);
+}
+
+.tarot-card.dragging {
+  cursor: grabbing;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+}
+
+/* ============================================================
+   Card Fall Animation
+   ============================================================ */
+@keyframes cardFall {
+  0%   { transform: translateY(-30px) rotate(-5deg); opacity: 0; }
+  60%  { transform: translateY(8px) rotate(1deg);   opacity: 1; }
+  100% { transform: translateY(0) rotate(0deg);     opacity: 1; }
+}
+
+@keyframes cardFallReversed {
+  0%   { transform: translateY(-30px) rotate(185deg); opacity: 0; }
+  60%  { transform: translateY(8px) rotate(179deg);   opacity: 1; }
+  100% { transform: translateY(0) rotate(180deg);     opacity: 1; }
+}
+
+.tarot-card.fell {
+  animation: cardFall 0.5s ease-out forwards;
+}
+
+.tarot-card.reversed.fell {
+  animation: cardFallReversed 0.5s ease-out forwards;
+}
+
+/* ============================================================
+   Deck Shuffle Animation
+   ============================================================ */
+@keyframes deckShake {
+  0%   { transform: rotate(0deg); }
+  20%  { transform: rotate(-3deg) translateX(-3px); }
+  40%  { transform: rotate(3deg) translateX(3px); }
+  60%  { transform: rotate(-2deg) translateX(-2px); }
+  80%  { transform: rotate(2deg) translateX(2px); }
+  100% { transform: rotate(0deg); }
+}
+
+.deck.shuffling {
+  animation: deckShake 0.6s ease-in-out;
 }
 
 /* ============================================================
@@ -197,29 +360,34 @@ body {
 .context-menu {
   position: fixed;
   display: none;
-  z-index: 1000;
-  background-color: #1a1a2e;
-  border: 1px solid #f0e6d3;
-  border-radius: 4px;
-  box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.7);
+  background: var(--color-context-bg);
+  border: 1px solid var(--color-context-border);
+  border-radius: 6px;
   min-width: 180px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  padding: 4px 0;
+  font-family: var(--font-main);
 }
 
 .context-menu ul {
   list-style: none;
-  padding: 0.25rem 0;
   margin: 0;
+  padding: 0;
 }
 
 .context-menu li {
-  padding: 0.5rem 1rem;
+  padding: 10px 16px;
+  font-size: 0.85rem;
+  color: var(--color-text);
   cursor: pointer;
-  font-size: 0.95rem;
-  color: #f0e6d3;
+  letter-spacing: 0.03em;
+  transition: background 0.15s;
 }
 
 .context-menu li:hover {
-  background-color: var(--color-tapete-dark);
+  background: rgba(201, 168, 76, 0.12);
+  color: var(--color-gold);
 }
 
 /* Shown programmatically by interactions.js */
@@ -227,7 +395,22 @@ body {
   display: block;
 }
 
-/* Applied during mouse/touch drag */
-.tarot-card.dragging {
-  cursor: grabbing;
+/* ============================================================
+   Responsive — Mobile
+   ============================================================ */
+@media (max-width: 600px) {
+  :root {
+    --card-width:  90px;
+    --card-height: 157px;
+  }
+
+  .controls {
+    padding: 12px 16px;
+    gap: 12px;
+  }
+
+  button {
+    padding: 8px 16px;
+    font-size: 0.75rem;
+  }
 }
