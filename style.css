@@ -1,31 +1,50 @@
 /* ============================================================
    Google Fonts
    ============================================================ */
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600&display=swap');
 
 /* ============================================================
-   CSS Custom Properties
+   CSS Custom Properties — "Arcane Vault"
+   Balatro neon + mystical cosmos
    ============================================================ */
 :root {
-  --color-tapete:         #1a3a2a;
-  --color-tapete-texture: #163224;
-  --color-gold:           #c9a84c;
-  --color-gold-light:     #e8c97a;
-  --color-text:           #f0e6d3;
-  --color-text-muted:     #a89880;
-  --color-card-shadow:    rgba(0, 0, 0, 0.6);
-  --color-btn-bg:         #0d1f17;
-  --color-btn-border:     #c9a84c;
-  --color-context-bg:     #0d1f17;
-  --color-context-border: #c9a84c;
-  --font-main:            'Cinzel', Georgia, serif;
-  --card-width:           120px;
-  --card-height:          210px;
-  --card-radius:          8px;
+  /* Void palette */
+  --bg-void:          #07050f;
+  --bg-surface:       #0e0b1e;
+  --bg-tapete:        #0a0717;
+
+  /* Neon accents */
+  --neon-pink:        #ff2d78;
+  --neon-violet:      #9b4dff;
+  --neon-cyan:        #00e5ff;
+  --neon-gold:        #ffcc00;
+
+  /* Glow versions */
+  --glow-pink:        rgba(255, 45, 120, 0.65);
+  --glow-violet:      rgba(155, 77, 255, 0.65);
+  --glow-cyan:        rgba(0, 229, 255, 0.5);
+  --glow-gold:        rgba(255, 204, 0, 0.6);
+
+  /* Text */
+  --text-bright:      #f5f0ff;
+  --text-muted:       #6a5a9a;
+
+  /* Glassmorphism */
+  --glass-bg:         rgba(10, 7, 25, 0.88);
+  --glass-border:     rgba(155, 77, 255, 0.35);
+
+  /* Card dimensions */
+  --card-width:       120px;
+  --card-height:      210px;
+  --card-radius:      10px;
+
+  /* Typography */
+  --font-display:     'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-ui:          'Cinzel', Georgia, serif;
 }
 
 /* ============================================================
-   Reset / Base
+   Reset
    ============================================================ */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -33,10 +52,13 @@
   padding: 0;
 }
 
+/* ============================================================
+   Body
+   ============================================================ */
 body {
-  font-family: var(--font-main);
-  background-color: #0a0f0b;
-  color: var(--color-text);
+  font-family: var(--font-ui);
+  background-color: var(--bg-void);
+  color: var(--text-bright);
   height: 100vh;
   overflow: hidden;
   display: flex;
@@ -48,107 +70,194 @@ body {
    ============================================================ */
 .site-header {
   width: 100%;
-  padding: 0.6rem 1.5rem;
-  background-color: #0a0f0b;
-  border-bottom: 1px solid rgba(201, 168, 76, 0.2);
+  padding: 0.7rem 1.5rem;
+  background: linear-gradient(
+    180deg,
+    rgba(7, 5, 15, 1) 0%,
+    rgba(14, 11, 30, 0.92) 100%
+  );
+  border-bottom: 1px solid rgba(155, 77, 255, 0.2);
   text-align: center;
   flex-shrink: 0;
   z-index: 50;
+  position: relative;
+}
+
+/* Rainbow accent line under header */
+.site-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--neon-pink) 20%,
+    var(--neon-violet) 50%,
+    var(--neon-cyan) 80%,
+    transparent 100%
+  );
+  opacity: 0.55;
 }
 
 .site-title {
-  font-family: var(--font-main);
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: 0.3em;
+  font-family: var(--font-display);
+  font-size: 1.55rem;
+  font-weight: 700;
+  letter-spacing: 0.55em;
   text-transform: uppercase;
-  color: var(--color-gold);
-  text-shadow: 0 0 20px rgba(201, 168, 76, 0.3);
+  background: linear-gradient(
+    90deg,
+    var(--neon-pink)   0%,
+    var(--neon-violet) 40%,
+    var(--neon-cyan)   75%,
+    var(--neon-gold)   100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 14px rgba(155, 77, 255, 0.75));
 }
 
 /* ============================================================
    Controls Bar
    ============================================================ */
 .controls {
-  position: relative;
   width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 16px;
-  padding: 16px 24px;
-  background: rgba(10, 15, 11, 0.92);
-  border-bottom: 1px solid rgba(201, 168, 76, 0.25);
+  gap: 20px;
+  padding: 14px 24px;
+  background: var(--glass-bg);
+  border-bottom: 1px solid var(--glass-border);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   flex-shrink: 0;
   z-index: 100;
+  position: relative;
 }
 
 /* ============================================================
-   Buttons
+   Buttons — Balatro ghost style
    ============================================================ */
-.controls button,
 button {
-  font-family: var(--font-main);
-  padding: 10px 28px;
-  border: 1.5px solid var(--color-gold);
-  background: transparent;
-  color: var(--color-gold);
-  border-radius: 4px;
-  letter-spacing: 0.08em;
+  font-family: var(--font-ui);
+  padding: 10px 32px;
+  border: 1.5px solid var(--neon-violet);
+  background: rgba(155, 77, 255, 0.07);
+  color: var(--neon-violet);
+  border-radius: 6px;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  font-size: 0.8rem;
+  font-size: 0.77rem;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  transition: all 0.22s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.controls button:hover,
+/* Shimmer layer on hover */
+button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.06) 50%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
 button:hover {
-  background: var(--color-gold);
-  color: var(--color-btn-bg);
+  border-color: var(--neon-pink);
+  color: var(--text-bright);
+  background: rgba(255, 45, 120, 0.1);
+  box-shadow:
+    0 0 10px rgba(255, 45, 120, 0.55),
+    0 0 28px rgba(255, 45, 120, 0.2),
+    inset 0 0 12px rgba(255, 45, 120, 0.04);
 }
 
-.controls button:active,
-button:active,
-.controls button:focus,
+button:hover::before {
+  opacity: 1;
+}
+
+button:active {
+  transform: scale(0.96);
+}
+
 button:focus {
-  box-shadow: 0 0 12px rgba(201, 168, 76, 0.4);
   outline: none;
+  box-shadow: 0 0 0 2px rgba(155, 77, 255, 0.45);
 }
 
 /* ============================================================
-   Tapete (Reading Table)
+   Tapete — Cosmic starfield reading surface
    ============================================================ */
 .tapete {
   position: relative;
   width: 100%;
   flex: 1;
   overflow: hidden;
-  background-color: var(--color-tapete);
-  /* Subtle noise grain via layered micro-gradients */
+  background-color: var(--bg-tapete);
+
   background-image:
-    /* Vignette: darker at edges, lighter center */
-    radial-gradient(
-      ellipse at 50% 50%,
-      rgba(30, 70, 50, 0.45) 0%,
-      rgba(10, 20, 14, 0.75) 100%
-    ),
-    /* Fine diagonal grain lines for texture */
-    repeating-linear-gradient(
-      135deg,
-      transparent,
-      transparent 3px,
-      rgba(0, 0, 0, 0.04) 3px,
-      rgba(0, 0, 0, 0.04) 4px
-    ),
-    /* Subtle horizontal weave */
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 5px,
-      rgba(255, 255, 255, 0.015) 5px,
-      rgba(255, 255, 255, 0.015) 6px
-    );
+    /* Nebula: warm pink glow top-right */
+    radial-gradient(ellipse 55% 38% at 80% 18%, rgba(255, 45, 120, 0.13) 0%, transparent 70%),
+    /* Nebula: electric violet glow bottom-left */
+    radial-gradient(ellipse 48% 55% at 15% 82%, rgba(155, 77, 255, 0.13) 0%, transparent 65%),
+    /* Nebula: cyan breath center */
+    radial-gradient(ellipse 32% 28% at 55% 52%, rgba(0, 229, 255, 0.055) 0%, transparent 55%),
+    /* Nebula: gold dust top-left */
+    radial-gradient(ellipse 28% 18% at 8% 12%, rgba(255, 204, 0, 0.055) 0%, transparent 50%),
+    /* Stars — white, dense, small */
+    radial-gradient(circle, rgba(255, 255, 255, 0.95) 1px, transparent 1px),
+    /* Stars — white, medium density */
+    radial-gradient(circle, rgba(255, 255, 255, 0.72) 1px, transparent 1px),
+    /* Stars — violet-tinted */
+    radial-gradient(circle, rgba(200, 180, 255, 0.85) 1px, transparent 1px),
+    /* Stars — pink-tinted */
+    radial-gradient(circle, rgba(255, 190, 220, 0.7) 1px, transparent 1px),
+    /* Stars — cyan-tinted */
+    radial-gradient(circle, rgba(180, 240, 255, 0.65) 1px, transparent 1px),
+    /* Medium stars — brighter */
+    radial-gradient(circle, rgba(255, 255, 255, 0.92) 1.5px, transparent 1.5px),
+    /* Medium stars — violet */
+    radial-gradient(circle, rgba(185, 160, 255, 0.8) 1.5px, transparent 1.5px),
+    /* Vignette — edges darker */
+    radial-gradient(ellipse at center, transparent 25%, rgba(7, 5, 15, 0.72) 100%);
+
+  background-size:
+    /* Nebula layers — full screen */
+    100% 100%, 100% 100%, 100% 100%, 100% 100%,
+    /* Star tile sizes — prime numbers for irregular distribution */
+    97px  83px,
+    71px 113px,
+    131px  79px,
+     89px 107px,
+    103px  67px,
+    211px 157px,
+    173px 229px,
+    /* Vignette — full screen */
+    100% 100%;
+
+  background-position:
+    center, center, center, center,
+      0px   0px,
+     43px  57px,
+     19px  91px,
+     64px  28px,
+     82px  74px,
+      0px   0px,
+     95px 135px,
+    center;
 }
 
 /* ============================================================
@@ -161,90 +270,111 @@ button:focus {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   z-index: 10;
 }
 
 /* ============================================================
-   Deck
+   Deck — neon pulsing card stack
    ============================================================ */
 .deck {
   position: relative;
   width: var(--card-width);
   height: var(--card-height);
   border-radius: var(--card-radius);
-  border: 2px solid var(--color-gold);
+  border: 1.5px solid rgba(155, 77, 255, 0.65);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Multi-layer shadow to simulate card stack depth */
-  box-shadow:
-    2px 2px 0 1px rgba(201, 168, 76, 0.15),
-    4px 4px 0 1px rgba(0, 0, 0, 0.5),
-    6px 6px 0 1px rgba(201, 168, 76, 0.1),
-    8px 8px 0 1px rgba(0, 0, 0, 0.4),
-    0 16px 40px rgba(0, 0, 0, 0.6);
-  transition: box-shadow 0.2s, transform 0.2s;
   user-select: none;
+  transition: transform 0.22s ease;
+
+  /* Diamond lattice card-back pattern */
+  background:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(155, 77, 255, 0.06) 10px,
+      rgba(155, 77, 255, 0.06) 11px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 10px,
+      rgba(255, 45, 120, 0.04) 10px,
+      rgba(255, 45, 120, 0.04) 11px
+    ),
+    var(--bg-surface);
+
+  animation: deckPulse 3.2s ease-in-out infinite;
 }
 
 .deck:hover {
-  box-shadow:
-    2px 2px 0 1px rgba(201, 168, 76, 0.2),
-    4px 4px 0 1px rgba(0, 0, 0, 0.5),
-    6px 6px 0 1px rgba(201, 168, 76, 0.15),
-    8px 8px 0 1px rgba(0, 0, 0, 0.4),
-    0 20px 50px rgba(0, 0, 0, 0.7),
-    0 0 0 1px rgba(201, 168, 76, 0.4);
+  transform: translateY(-4px);
 }
 
-/* Pseudo-element card stack: second card behind */
+/* Card stack: second card */
 .deck::before {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: var(--card-radius);
-  border: 1.5px solid rgba(201, 168, 76, 0.4);
-  background: var(--color-tapete-texture);
-  transform: translate(3px, 3px);
+  border: 1px solid rgba(155, 77, 255, 0.35);
+  background: rgba(14, 11, 28, 0.9);
+  transform: translate(4px, 6px);
   z-index: -1;
 }
 
-/* Third card further behind */
+/* Card stack: third card */
 .deck::after {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: var(--card-radius);
-  border: 1.5px solid rgba(201, 168, 76, 0.25);
-  background: var(--color-tapete-texture);
-  transform: translate(6px, 6px);
+  border: 1px solid rgba(155, 77, 255, 0.18);
+  background: rgba(10, 7, 20, 0.85);
+  transform: translate(8px, 12px);
   z-index: -2;
 }
 
-/* Decorative card-back pattern */
-#deck {
-  background:
-    repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 8px,
-      rgba(201, 168, 76, 0.05) 8px,
-      rgba(201, 168, 76, 0.05) 9px
-    ),
-    var(--color-tapete-texture);
+/* Neon glow pulses between violet and pink */
+@keyframes deckPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 14px rgba(155, 77, 255, 0.65),
+      0 0 32px rgba(155, 77, 255, 0.28),
+      0 0 60px rgba(155, 77, 255, 0.1),
+      0 18px 55px rgba(0, 0, 0, 0.75);
+  }
+  50% {
+    box-shadow:
+      0 0 18px rgba(255, 45, 120, 0.7),
+      0 0 40px rgba(255, 45, 120, 0.32),
+      0 0 70px rgba(255, 45, 120, 0.12),
+      0 18px 55px rgba(0, 0, 0, 0.75);
+  }
 }
 
-/* The triquetra/symbol inside the deck */
+/* ============================================================
+   Deck symbol
+   ============================================================ */
 .deck-back-label {
-  font-size: 2.4rem;
-  color: var(--color-gold);
-  opacity: 0.7;
-  user-select: none;
-  text-shadow: 0 0 12px rgba(201, 168, 76, 0.5);
+  font-size: 2.2rem;
   position: relative;
   z-index: 1;
+  user-select: none;
+  background: linear-gradient(
+    135deg,
+    var(--neon-pink),
+    var(--neon-violet),
+    var(--neon-cyan)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 10px rgba(155, 77, 255, 0.85));
 }
 
 /* ============================================================
@@ -252,16 +382,18 @@ button:focus {
    ============================================================ */
 .deck-count {
   display: inline-block;
-  font-family: var(--font-main);
-  font-size: 0.75rem;
-  color: var(--color-gold);
-  background: rgba(13, 31, 23, 0.85);
-  border: 1px solid rgba(201, 168, 76, 0.4);
-  border-radius: 12px;
-  padding: 2px 10px;
-  min-width: 2.5rem;
+  font-family: var(--font-ui);
+  font-size: 0.71rem;
+  letter-spacing: 0.1em;
+  color: var(--neon-violet);
+  background: rgba(155, 77, 255, 0.08);
+  border: 1px solid rgba(155, 77, 255, 0.4);
+  border-radius: 20px;
+  padding: 3px 12px;
+  min-width: 3rem;
   text-align: center;
-  letter-spacing: 0.05em;
+  box-shadow: 0 0 8px rgba(155, 77, 255, 0.3);
+  transition: color 0.3s, box-shadow 0.3s;
 }
 
 /* ============================================================
@@ -284,12 +416,37 @@ button:focus {
   width: var(--card-width);
   height: var(--card-height);
   border-radius: var(--card-radius);
-  box-shadow: 0 8px 24px var(--color-card-shadow);
+  overflow: hidden;
   cursor: grab;
   user-select: none;
-  transition: box-shadow 0.15s ease;
-  overflow: hidden;
   pointer-events: all;
+  transition:
+    box-shadow 0.22s ease,
+    transform 0.18s ease;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(155, 77, 255, 0.22),
+    0 6px 22px rgba(0, 0, 0, 0.75),
+    0 0 10px rgba(155, 77, 255, 0.12);
+}
+
+/* Holographic shimmer overlay — revealed on hover */
+.tarot-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent        15%,
+    rgba(255,255,255,0.04) 38%,
+    rgba(155, 77,255,0.13) 50%,
+    rgba(255, 45,120,0.09) 62%,
+    transparent        85%
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+  border-radius: var(--card-radius);
 }
 
 .tarot-card img {
@@ -300,74 +457,162 @@ button:focus {
   pointer-events: none;
 }
 
+/* Hover: lift + neon border glow + shimmer */
 .tarot-card:hover {
+  transform: translateY(-5px) scale(1.025);
   box-shadow:
-    0 12px 36px rgba(0, 0, 0, 0.8),
-    0 0 0 1.5px var(--color-gold);
+    inset 0 0 0 1.5px rgba(255, 45, 120, 0.55),
+    0 0 14px rgba(255, 45, 120, 0.55),
+    0 0 36px rgba(155, 77, 255, 0.32),
+    0 18px 52px rgba(0, 0, 0, 0.88);
 }
 
+.tarot-card:hover::after {
+  opacity: 1;
+}
+
+/* Reversed — rotated 180° */
 .tarot-card.reversed {
   transform: rotate(180deg);
 }
 
+.tarot-card.reversed:hover {
+  transform: rotate(180deg) translateY(-5px) scale(1.025);
+}
+
+/* Dragging — cyan glow, slight tilt */
 .tarot-card.dragging {
   cursor: grabbing;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+  transform: scale(1.05) rotate(2deg);
+  box-shadow:
+    inset 0 0 0 1.5px rgba(0, 229, 255, 0.55),
+    0 0 18px rgba(0, 229, 255, 0.55),
+    0 0 45px rgba(0, 229, 255, 0.25),
+    0 28px 70px rgba(0, 0, 0, 0.92);
+}
+
+.tarot-card.reversed.dragging {
+  transform: rotate(180deg) scale(1.05) rotate(2deg);
 }
 
 /* ============================================================
-   Card Fall Animation
+   Card Fall Animation — spring bounce with glow trail
    ============================================================ */
 @keyframes cardFall {
-  0%   { transform: translateY(-30px) rotate(-5deg); opacity: 0; }
-  60%  { transform: translateY(8px) rotate(1deg);   opacity: 1; }
-  100% { transform: translateY(0) rotate(0deg);     opacity: 1; }
+  0% {
+    transform: translateY(-45px) rotate(-10deg);
+    opacity: 0;
+    box-shadow:
+      0 0 40px rgba(255, 45, 120, 0.9),
+      0 0 80px rgba(255, 45, 120, 0.4);
+  }
+  55% {
+    transform: translateY(7px) rotate(2deg);
+    opacity: 1;
+    box-shadow:
+      0 0 20px rgba(155, 77, 255, 0.6),
+      0 12px 36px rgba(0, 0, 0, 0.75);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+    box-shadow:
+      inset 0 0 0 1px rgba(155, 77, 255, 0.22),
+      0 6px 22px rgba(0, 0, 0, 0.75);
+  }
 }
 
 @keyframes cardFallReversed {
-  0%   { transform: translateY(-30px) rotate(185deg); opacity: 0; }
-  60%  { transform: translateY(8px) rotate(179deg);   opacity: 1; }
-  100% { transform: translateY(0) rotate(180deg);     opacity: 1; }
+  0% {
+    transform: translateY(-45px) rotate(170deg);
+    opacity: 0;
+    box-shadow:
+      0 0 40px rgba(255, 45, 120, 0.9),
+      0 0 80px rgba(255, 45, 120, 0.4);
+  }
+  55% {
+    transform: translateY(7px) rotate(182deg);
+    opacity: 1;
+    box-shadow:
+      0 0 20px rgba(155, 77, 255, 0.6),
+      0 12px 36px rgba(0, 0, 0, 0.75);
+  }
+  100% {
+    transform: translateY(0) rotate(180deg);
+    opacity: 1;
+    box-shadow:
+      inset 0 0 0 1px rgba(155, 77, 255, 0.22),
+      0 6px 22px rgba(0, 0, 0, 0.75);
+  }
 }
 
 .tarot-card.fell {
-  animation: cardFall 0.5s ease-out forwards;
+  animation: cardFall 0.55s cubic-bezier(0.34, 1.4, 0.64, 1) forwards;
 }
 
 .tarot-card.reversed.fell {
-  animation: cardFallReversed 0.5s ease-out forwards;
+  animation: cardFallReversed 0.55s cubic-bezier(0.34, 1.4, 0.64, 1) forwards;
 }
 
 /* ============================================================
-   Deck Shuffle Animation
+   Deck Shuffle Animation — energetic shake + neon flash
    ============================================================ */
 @keyframes deckShake {
-  0%   { transform: rotate(0deg); }
-  20%  { transform: rotate(-3deg) translateX(-3px); }
-  40%  { transform: rotate(3deg) translateX(3px); }
-  60%  { transform: rotate(-2deg) translateX(-2px); }
-  80%  { transform: rotate(2deg) translateX(2px); }
-  100% { transform: rotate(0deg); }
+  0%   { transform: rotate(0deg) scale(1); }
+  8%   { transform: rotate(-6deg) translateX(-5px) scale(1.03); }
+  22%  { transform: rotate(6deg)  translateX(5px)  scale(1.02); }
+  36%  { transform: rotate(-4deg) translateX(-3px) scale(1.01); }
+  50%  { transform: rotate(4deg)  translateX(3px); }
+  64%  { transform: rotate(-2deg) translateX(-2px); }
+  78%  { transform: rotate(2deg)  translateX(2px); }
+  92%  { transform: rotate(-1deg) translateX(-1px); }
+  100% { transform: rotate(0deg) scale(1); }
 }
 
 .deck.shuffling {
-  animation: deckShake 0.6s ease-in-out;
+  animation: deckShake 0.65s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  box-shadow:
+    0 0 35px rgba(255, 45, 120, 0.95),
+    0 0 70px rgba(255, 45, 120, 0.55),
+    0 0 110px rgba(155, 77, 255, 0.3),
+    0 22px 65px rgba(0, 0, 0, 0.75) !important;
 }
 
 /* ============================================================
-   Context Menu
+   Context Menu — glassmorphism + neon border
    ============================================================ */
 .context-menu {
   position: fixed;
   display: none;
-  background: var(--color-context-bg);
-  border: 1px solid var(--color-context-border);
-  border-radius: 6px;
-  min-width: 180px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+  background: var(--glass-bg);
+  border: 1px solid rgba(155, 77, 255, 0.5);
+  border-radius: 10px;
+  min-width: 194px;
+  box-shadow:
+    0 0 24px rgba(155, 77, 255, 0.32),
+    0 18px 44px rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   z-index: 1000;
-  padding: 4px 0;
-  font-family: var(--font-main);
+  padding: 4px 0 6px;
+  font-family: var(--font-ui);
+  overflow: hidden;
+}
+
+/* Rainbow top-edge accent */
+.context-menu::before {
+  content: '';
+  display: block;
+  height: 1px;
+  margin-bottom: 4px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--neon-pink) 25%,
+    var(--neon-violet) 75%,
+    transparent
+  );
+  opacity: 0.65;
 }
 
 .context-menu ul {
@@ -377,20 +622,20 @@ button:focus {
 }
 
 .context-menu li {
-  padding: 10px 16px;
-  font-size: 0.85rem;
-  color: var(--color-text);
+  padding: 10px 18px;
+  font-size: 0.8rem;
+  color: var(--text-bright);
   cursor: pointer;
-  letter-spacing: 0.03em;
-  transition: background 0.15s;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  transition: background 0.15s ease, color 0.15s ease;
 }
 
 .context-menu li:hover {
-  background: rgba(201, 168, 76, 0.12);
-  color: var(--color-gold);
+  background: rgba(155, 77, 255, 0.16);
+  color: var(--neon-violet);
 }
 
-/* Shown programmatically by interactions.js */
 .context-menu.visible {
   display: block;
 }
@@ -400,17 +645,23 @@ button:focus {
    ============================================================ */
 @media (max-width: 600px) {
   :root {
-    --card-width:  90px;
-    --card-height: 157px;
+    --card-width:  88px;
+    --card-height: 154px;
   }
 
   .controls {
-    padding: 12px 16px;
-    gap: 12px;
+    padding: 10px 16px;
+    gap: 14px;
   }
 
   button {
-    padding: 8px 16px;
-    font-size: 0.75rem;
+    padding: 8px 18px;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+  }
+
+  .site-title {
+    font-size: 1.2rem;
+    letter-spacing: 0.35em;
   }
 }
