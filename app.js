@@ -159,7 +159,7 @@ function drawCard() {
   }
 
   const card = deck.pop();
-  const reversed = Math.random() < 0.5;
+  const reversed = Math.random() < 0.2;
 
   drawnCards.push({ ...card, reversed });
 
