@@ -221,3 +221,13 @@ body {
 .context-menu li:hover {
   background-color: var(--color-tapete-dark);
 }
+
+/* Shown programmatically by interactions.js */
+.context-menu.visible {
+  display: block;
+}
+
+/* Applied during mouse/touch drag */
+.tarot-card.dragging {
+  cursor: grabbing;
+}
