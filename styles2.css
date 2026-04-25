@@ -1,0 +1,695 @@
+/* ============================================================
+   Google Fonts — Orbitron (cyber display) + Space Mono (terminal UI)
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
+/* ============================================================
+   CSS Custom Properties — "CRYSTAL VOID"
+   Cybercore brutalism — red / white / black / orb
+   ============================================================ */
+:root {
+  /* Void palette */
+  --void:           #000000;
+  --surface:        #050000;
+  --white:          #ffffff;
+  --off-white:      #e8e0e0;
+
+  /* Red spectrum */
+  --red:            #dc0000;
+  --red-bright:     #ff1a1a;
+  --red-deep:       #6b0000;
+  --red-blood:      #1a0000;
+
+  /* Glow */
+  --glow-red:       rgba(220, 0, 0, 0.7);
+  --glow-red-soft:  rgba(220, 0, 0, 0.3);
+  --glow-white:     rgba(255, 255, 255, 0.55);
+
+  /* Orb crystal effects */
+  --orb-inner:      rgba(160, 0, 0, 0.22);
+  --orb-rim:        rgba(255, 255, 255, 0.05);
+  --orb-reflex:     rgba(255, 255, 255, 0.06);
+  --scan-line:      rgba(255, 255, 255, 0.016);
+
+  /* Card dimensions — same as default so switching is seamless */
+  --card-width:     120px;
+  --card-height:    210px;
+  --card-radius:    4px;   /* brutalism = minimal radius */
+
+  /* Typography */
+  --font-display:   'Orbitron', 'Space Mono', monospace;
+  --font-ui:        'Space Mono', 'Courier New', monospace;
+
+  /* Brutalist hard shadow (no blur — offset only) */
+  --hard-red:       3px 3px 0 var(--red);
+  --hard-white:     3px 3px 0 var(--white);
+}
+
+/* ============================================================
+   Reset
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ============================================================
+   Body
+   ============================================================ */
+body {
+  font-family: var(--font-ui);
+  background-color: var(--void);
+  color: var(--white);
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================================
+   Site Header — brutalist slab
+   ============================================================ */
+.site-header {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  background: var(--void);
+  border-bottom: 3px solid var(--red);
+  text-align: center;
+  flex-shrink: 0;
+  z-index: 50;
+  position: relative;
+}
+
+/* Red accent bar — second underline rule (brutalist double border trick) */
+.site-header::after {
+  content: '';
+  position: absolute;
+  bottom: -7px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--white);
+  opacity: 0.15;
+}
+
+.site-title {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 900;
+  letter-spacing: 0.7em;
+  text-transform: uppercase;
+  color: var(--white);
+  /* Cybercore glitch text-shadow: white + red offset */
+  text-shadow:
+    0 0 18px var(--glow-white),
+    2px 0   0 var(--red),
+    -1px 0  0 rgba(220, 0, 0, 0.4);
+  position: relative;
+}
+
+/* ============================================================
+   Controls Bar — stark brutalist strip
+   ============================================================ */
+.controls {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 14px 24px;
+  background: var(--void);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.12);
+  flex-shrink: 0;
+  z-index: 100;
+  position: relative;
+}
+
+/* ============================================================
+   Buttons — neo-brutalist: thick border, hard shadow, invert on hover
+   ============================================================ */
+button {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  padding: 10px 28px;
+  border: 2px solid var(--white);
+  background: var(--void);
+  color: var(--white);
+  border-radius: 0;                /* brutalism = no radius */
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: all 0.12s ease;
+  /* Hard shadow offset — neo-brutalist signature */
+  box-shadow: var(--hard-red);
+  position: relative;
+}
+
+button:hover {
+  background: var(--white);
+  color: var(--void);
+  border-color: var(--white);
+  box-shadow:
+    4px 4px 0 var(--red),
+    0 0 18px rgba(255, 255, 255, 0.3);
+  transform: translate(-1px, -1px);
+}
+
+button:active {
+  transform: translate(2px, 2px);
+  box-shadow: none;
+}
+
+button:focus {
+  outline: 2px solid var(--red);
+  outline-offset: 3px;
+}
+
+/* ============================================================
+   Tapete — Crystal Ball reading surface
+   Crystal sphere illusion: inner red fire, glass reflection,
+   concentric orb rings, cybercore scan lines, void vignette.
+   ============================================================ */
+.tapete {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  overflow: hidden;
+  background-color: var(--surface);
+
+  background-image:
+    /* ── VIGNETTE ─────────────────────────────────────────
+       Crushes edges to black — you're looking INTO an orb */
+    radial-gradient(
+      ellipse 90% 95% at 50% 50%,
+      transparent 20%,
+      rgba(0, 0, 0, 0.88) 100%
+    ),
+    /* ── INNER FIRE ───────────────────────────────────────
+       The red energy at the heart of the crystal */
+    radial-gradient(
+      ellipse 55% 50% at 50% 58%,
+      rgba(160, 0, 0, 0.24) 0%,
+      transparent 65%
+    ),
+    /* ── SECONDARY EMBER ──────────────────────────────────
+       Deep crimson below center */
+    radial-gradient(
+      ellipse 40% 30% at 62% 72%,
+      rgba(100, 0, 0, 0.18) 0%,
+      transparent 55%
+    ),
+    /* ── GLASS REFLECTION ─────────────────────────────────
+       White highlight — classic sphere shading, top-left */
+    radial-gradient(
+      ellipse 28% 18% at 34% 24%,
+      rgba(255, 255, 255, 0.065) 0%,
+      transparent 60%
+    ),
+    /* ── SECONDARY REFLEX ─────────────────────────────────
+       Smaller, bottom-right counter-highlight */
+    radial-gradient(
+      ellipse 14% 10% at 68% 76%,
+      rgba(255, 255, 255, 0.025) 0%,
+      transparent 50%
+    ),
+    /* ── HORIZONTAL SCAN LINES (cybercore) ────────────────
+       CRT / digital screen texture */
+    repeating-linear-gradient(
+      0deg,
+      transparent         0px,
+      transparent         2px,
+      var(--scan-line)    2px,
+      var(--scan-line)    3px
+    ),
+    /* ── VERTICAL SUBTLE LINES (data grid) ───────────────
+       Very faint vertical lines — digital matrix feel */
+    repeating-linear-gradient(
+      90deg,
+      transparent             0px,
+      transparent            40px,
+      rgba(220,0,0,0.012)    40px,
+      rgba(220,0,0,0.012)    41px
+    );
+}
+
+/* ── CONCENTRIC ORB RINGS (::before) ─────────────────────
+   The glass curvature of the crystal sphere — razor-thin rings */
+.tapete::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 50% 50%,
+      transparent         28.8%,
+      rgba(255,255,255,0.022) 29%,
+      transparent         29.2%
+    ),
+    radial-gradient(circle at 50% 50%,
+      transparent         48.7%,
+      rgba(255,255,255,0.016) 49%,
+      transparent         49.3%
+    ),
+    radial-gradient(circle at 50% 50%,
+      transparent         68.6%,
+      rgba(220,0,0,0.014)    69%,
+      transparent         69.4%
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── RED PULSE (::after) ──────────────────────────────────
+   The living heartbeat within the crystal */
+.tapete::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 35% 30% at 50% 55%,
+    rgba(200, 0, 0, 0.12) 0%,
+    transparent 70%
+  );
+  animation: orbPulse 4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes orbPulse {
+  0%,  100% { opacity: 0.6; transform: scale(1);    }
+  50%        { opacity: 1;   transform: scale(1.08); }
+}
+
+/* ============================================================
+   Deck Area
+   ============================================================ */
+.deck-area {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  z-index: 10;
+}
+
+/* ============================================================
+   Deck — brutalist slab with pulsing red glow
+   ============================================================ */
+.deck {
+  position: relative;
+  width: var(--card-width);
+  height: var(--card-height);
+  border-radius: var(--card-radius);
+  border: 2px solid var(--white);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  transition: transform 0.12s ease;
+
+  /* Card-back: dark grid on black */
+  background:
+    linear-gradient(
+      rgba(200, 0, 0, 0.09) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(200, 0, 0, 0.09) 1px,
+      transparent 1px
+    ),
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(150, 0, 0, 0.22) 0%,
+      transparent 55%
+    ),
+    var(--void);
+  background-size: 14px 14px, 14px 14px, 100% 100%, 100% 100%;
+
+  /* Neo-brutalist hard shadow: white + red offset stack */
+  animation: deckGlow 3s ease-in-out infinite;
+}
+
+@keyframes deckGlow {
+  0%,  100% {
+    box-shadow:
+      3px 3px 0 var(--white),
+      6px 6px 0 var(--red),
+      0 0 20px rgba(220, 0, 0, 0.5),
+      0 0 45px rgba(220, 0, 0, 0.18);
+  }
+  50% {
+    box-shadow:
+      3px 3px 0 var(--white),
+      6px 6px 0 var(--red),
+      0 0 30px rgba(220, 0, 0, 0.75),
+      0 0 65px rgba(220, 0, 0, 0.3);
+  }
+}
+
+.deck:hover {
+  transform: translate(-2px, -2px);
+  box-shadow:
+    5px 5px 0 var(--white),
+    10px 10px 0 var(--red),
+    0 0 40px rgba(220, 0, 0, 0.8),
+    0 0 80px rgba(220, 0, 0, 0.35) !important;
+}
+
+/* Hard-shadow card stack — offset copies behind */
+.deck::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--card-radius);
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
+  background: #080000;
+  transform: translate(4px, 6px);
+  z-index: -1;
+}
+
+.deck::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--card-radius);
+  border: 1px solid rgba(220, 0, 0, 0.35);
+  background: #040000;
+  transform: translate(8px, 12px);
+  z-index: -2;
+}
+
+/* ============================================================
+   Deck symbol — red glyph inside the card
+   ============================================================ */
+.deck-back-label {
+  font-size: 2rem;
+  color: var(--red);
+  position: relative;
+  z-index: 1;
+  user-select: none;
+  text-shadow:
+    0 0 12px var(--glow-red),
+    0 0 30px rgba(220, 0, 0, 0.4);
+  font-family: var(--font-display);
+}
+
+/* ============================================================
+   Deck Count Badge — terminal readout
+   ============================================================ */
+.deck-count {
+  display: inline-block;
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--red-bright);
+  background: var(--void);
+  border: 1.5px solid var(--red);
+  border-radius: 0;           /* brutalism: square badge */
+  padding: 3px 10px;
+  min-width: 3rem;
+  text-align: center;
+  box-shadow:
+    2px 2px 0 var(--red),
+    0 0 8px rgba(220, 0, 0, 0.4);
+}
+
+/* ============================================================
+   Cards Container
+   ============================================================ */
+#cardsContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ============================================================
+   Tarot Card — cybercore brutalism
+   ============================================================ */
+.tarot-card {
+  position: absolute;
+  width: var(--card-width);
+  height: var(--card-height);
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  cursor: grab;
+  user-select: none;
+  pointer-events: all;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  transition:
+    box-shadow 0.15s ease,
+    transform  0.12s ease;
+
+  box-shadow:
+    2px 2px 0 rgba(220, 0, 0, 0.4),
+    0 6px 18px rgba(0, 0, 0, 0.85);
+}
+
+/* Red scan-line shimmer — revealed on hover */
+.tarot-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent         0px,
+    transparent         3px,
+    rgba(220, 0, 0, 0.06) 3px,
+    rgba(220, 0, 0, 0.06) 4px
+  );
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.tarot-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+
+/* Hover: lift + hard red shadow + scan lines */
+.tarot-card:hover {
+  transform: translate(-3px, -3px);
+  border-color: var(--red);
+  box-shadow:
+    5px 5px 0 var(--red),
+    0 0 16px rgba(220, 0, 0, 0.65),
+    0 0 40px rgba(220, 0, 0, 0.22),
+    0 14px 40px rgba(0, 0, 0, 0.9);
+}
+
+.tarot-card:hover::after {
+  opacity: 1;
+}
+
+/* Reversed */
+.tarot-card.reversed {
+  transform: rotate(180deg);
+}
+
+.tarot-card.reversed:hover {
+  transform: rotate(180deg) translate(-3px, -3px);
+}
+
+/* Dragging — white glow, stronger lift */
+.tarot-card.dragging {
+  cursor: grabbing;
+  transform: scale(1.05) rotate(1.5deg);
+  border-color: var(--white);
+  box-shadow:
+    4px 4px 0 var(--white),
+    0 0 20px rgba(255, 255, 255, 0.5),
+    0 0 50px rgba(220, 0, 0, 0.3),
+    0 24px 60px rgba(0, 0, 0, 0.95);
+}
+
+.tarot-card.reversed.dragging {
+  transform: rotate(180deg) scale(1.05) rotate(1.5deg);
+}
+
+/* ============================================================
+   Card Fall Animation — hard drop with red flash
+   ============================================================ */
+@keyframes cardFall {
+  0% {
+    transform: translateY(-50px) rotate(-12deg);
+    opacity: 0;
+    box-shadow:
+      0 0 50px rgba(220, 0, 0, 1),
+      0 0 100px rgba(220, 0, 0, 0.5);
+  }
+  50% {
+    transform: translateY(5px) rotate(2deg);
+    opacity: 1;
+    box-shadow:
+      3px 3px 0 var(--red),
+      0 0 20px rgba(220, 0, 0, 0.5);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+    box-shadow:
+      2px 2px 0 rgba(220, 0, 0, 0.4),
+      0 6px 18px rgba(0, 0, 0, 0.85);
+  }
+}
+
+@keyframes cardFallReversed {
+  0% {
+    transform: translateY(-50px) rotate(168deg);
+    opacity: 0;
+    box-shadow:
+      0 0 50px rgba(220, 0, 0, 1),
+      0 0 100px rgba(220, 0, 0, 0.5);
+  }
+  50% {
+    transform: translateY(5px) rotate(182deg);
+    opacity: 1;
+    box-shadow:
+      3px 3px 0 var(--red),
+      0 0 20px rgba(220, 0, 0, 0.5);
+  }
+  100% {
+    transform: translateY(0) rotate(180deg);
+    opacity: 1;
+    box-shadow:
+      2px 2px 0 rgba(220, 0, 0, 0.4),
+      0 6px 18px rgba(0, 0, 0, 0.85);
+  }
+}
+
+.tarot-card.fell {
+  animation: cardFall 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.tarot-card.reversed.fell {
+  animation: cardFallReversed 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ============================================================
+   Deck Shuffle Animation — CYBERCORE GLITCH
+   Translate + skew + brightness flash — no color hue change
+   ============================================================ */
+@keyframes deckGlitch {
+  0%   { transform: translate(0); filter: brightness(1); }
+  7%   { transform: translate(-6px,  2px) skewX(-5deg); filter: brightness(2.5); }
+  14%  { transform: translate( 6px, -2px) skewX( 3deg); filter: brightness(1); }
+  21%  { transform: translate(-4px,  0px) skewX(-3deg); filter: brightness(2); }
+  28%  { transform: translate( 4px,  3px);               filter: brightness(1); }
+  35%  { transform: translate(-5px, -1px) skewX( 4deg); filter: brightness(2.2); }
+  42%  { transform: translate( 5px,  1px);               filter: brightness(1); }
+  49%  { transform: translate(-2px,  2px) skewX(-1deg); }
+  56%  { transform: translate( 2px, -2px);               filter: brightness(1.6); }
+  63%  { transform: translate(-1px,  0px); }
+  70%  { transform: translate( 1px,  1px); }
+  85%  { transform: translate(0); filter: brightness(1); }
+  100% { transform: translate(0); filter: brightness(1); }
+}
+
+.deck.shuffling {
+  animation: deckGlitch 0.65s steps(1, end) both;
+  box-shadow:
+    3px 3px 0 var(--white),
+    6px 6px 0 var(--red),
+    0 0 60px rgba(220, 0, 0, 1),
+    0 0 120px rgba(220, 0, 0, 0.5) !important;
+  border-color: var(--red) !important;
+}
+
+/* ============================================================
+   Context Menu — stark brutalist panel, no blur
+   ============================================================ */
+.context-menu {
+  position: fixed;
+  display: none;
+  background: var(--void);
+  border: 2px solid var(--white);
+  border-radius: 0;             /* brutalism: hard corners */
+  min-width: 200px;
+  /* Neo-brutalist hard shadow */
+  box-shadow:
+    4px 4px 0 var(--red),
+    0 0 20px rgba(220, 0, 0, 0.35);
+  z-index: 1000;
+  padding: 0;
+  font-family: var(--font-ui);
+  overflow: hidden;
+}
+
+/* Red top-edge rule */
+.context-menu::before {
+  content: '';
+  display: block;
+  height: 3px;
+  background: var(--red);
+}
+
+.context-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.context-menu li {
+  padding: 11px 16px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--white);
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  transition: background 0.1s, color 0.1s;
+}
+
+.context-menu li:last-child {
+  border-bottom: none;
+}
+
+.context-menu li:hover {
+  background: var(--red);
+  color: var(--white);
+}
+
+.context-menu.visible {
+  display: block;
+}
+
+/* ============================================================
+   Responsive — Mobile
+   ============================================================ */
+@media (max-width: 600px) {
+  :root {
+    --card-width:  88px;
+    --card-height: 154px;
+  }
+
+  .controls {
+    padding: 10px 14px;
+    gap: 12px;
+  }
+
+  button {
+    padding: 8px 16px;
+    font-size: 0.65rem;
+    box-shadow: 2px 2px 0 var(--red);
+  }
+
+  .site-title {
+    font-size: 1.05rem;
+    letter-spacing: 0.45em;
+  }
+}
