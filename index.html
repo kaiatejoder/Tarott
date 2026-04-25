@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tarott — Rider-Waite Tarot</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <h1 class="site-title">Tarott</h1>
+  </header>
+
+  <div class="controls">
+    <button id="btnShuffle">Barajar</button>
+    <button id="btnDraw">Tirar carta</button>
+  </div>
+
+  <main class="tapete">
+
+    <div class="deck-area">
+      <div class="deck" id="deck">
+        <span class="deck-back-label">&#9775;</span>
+      </div>
+      <span class="deck-count" id="deckCount">78</span>
+    </div>
+
+    <div id="cardsContainer"></div>
+
+  </main>
+
+  <div class="context-menu" id="contextMenu">
+    <ul>
+      <li id="ctxSearch">Buscar carta</li>
+      <li id="ctxReturn">Devolver a la baraja</li>
+    </ul>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+/* ============================================================
+   CSS Custom Properties
+   ============================================================ */
+:root {
+  --color-tapete:        #2d6a4f;
+  --color-tapete-dark:   #1b4332;
+  --color-btn-primary:   #6c3b1f;
+  --color-btn-secondary: #3d405b;
+  --font-main:           'Georgia', serif;
+  --card-width:          120px;
+  --card-height:         210px;
+  --card-radius:         8px;
+}
+
+/* ============================================================
+   Reset / Base
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: #111;
+  color: #f0e6d3;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ============================================================
+   Site Header
+   ============================================================ */
+.site-header {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--color-tapete-dark);
+  text-align: center;
+}
+
+.site-title {
+  font-size: 1.8rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   Controls Bar
+   ============================================================ */
+.controls {
+  display: flex;
+  gap: 1rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #1a1a1a;
+  width: 100%;
+  justify-content: center;
+}
+
+#btnShuffle {
+  background-color: var(--color-btn-secondary);
+  color: #f0e6d3;
+  border: 2px solid #f0e6d3;
+  padding: 0.5rem 1.25rem;
+  font-family: var(--font-main);
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#btnDraw {
+  background-color: var(--color-btn-primary);
+  color: #f0e6d3;
+  border: 2px solid #f0e6d3;
+  padding: 0.5rem 1.25rem;
+  font-family: var(--font-main);
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#btnShuffle:hover,
+#btnDraw:hover {
+  opacity: 0.85;
+}
+
+#btnShuffle:active,
+#btnDraw:active {
+  opacity: 0.7;
+}
+
+/* ============================================================
+   Tapete (Reading Table / Green Felt Mat)
+   ============================================================ */
+.tapete {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  min-height: 600px;
+  background-color: var(--color-tapete);
+  background-image:
+    radial-gradient(ellipse at center, var(--color-tapete) 60%, var(--color-tapete-dark) 100%);
+  overflow: hidden;
+  padding: 1.5rem;
+}
+
+/* ============================================================
+   Deck Area
+   ============================================================ */
+.deck-area {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.deck {
+  width: var(--card-width);
+  height: var(--card-height);
+  background-color: #1a1a2e;
+  border: 2px solid #f0e6d3;
+  border-radius: var(--card-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 #000, 6px 6px 0 #111, 9px 9px 0 #1a1a1a;
+}
+
+.deck-back-label {
+  font-size: 2.5rem;
+  color: #f0e6d3;
+  user-select: none;
+}
+
+.deck-count {
+  font-size: 0.9rem;
+  background-color: var(--color-tapete-dark);
+  color: #f0e6d3;
+  border: 1px solid #f0e6d3;
+  border-radius: 12px;
+  padding: 0.2rem 0.6rem;
+  min-width: 2.5rem;
+  text-align: center;
+}
+
+/* ============================================================
+   Cards Container
+   ============================================================ */
+#cardsContainer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* ============================================================
+   Tarot Card
+   ============================================================ */
+.tarot-card {
+  position: absolute;
+  width: var(--card-width);
+  height: var(--card-height);
+  border-radius: var(--card-radius);
+  border: 2px solid #f0e6d3;
+  overflow: hidden;
+  cursor: grab;
+  pointer-events: all;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+  transition: box-shadow 0.15s ease;
+  user-select: none;
+}
+
+.tarot-card:active {
+  cursor: grabbing;
+  box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.8);
+}
+
+.tarot-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.tarot-card.reversed {
+  transform: rotate(180deg);
+}
+
+/* ============================================================
+   Context Menu
+   ============================================================ */
+.context-menu {
+  position: fixed;
+  display: none;
+  z-index: 1000;
+  background-color: #1a1a2e;
+  border: 1px solid #f0e6d3;
+  border-radius: 4px;
+  box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.7);
+  min-width: 180px;
+}
+
+.context-menu ul {
+  list-style: none;
+  padding: 0.25rem 0;
+  margin: 0;
+}
+
+.context-menu li {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: #f0e6d3;
+}
+
+.context-menu li:hover {
+  background-color: var(--color-tapete-dark);
+}
