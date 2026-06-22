@@ -30,7 +30,7 @@ const CARDS = [
   { id: "world",           name: "The World",           img: "https://www.sacred-texts.com/tarot/pkt/img/ar21.jpg", arcana: "major", suit: null, number: 21 },
 
   /* ── Minor Arcana — Wands (14 cards) ── */
-  { id: "ace-wands",     name: "Ace of Wands",     img: "https://www.sacred-texts.com/tarot/pkt/img/wa01.jpg", arcana: "minor", suit: "wands", number: 1  },
+  { id: "ace-wands",     name: "Ace of Wands",     img: "https://www.sacred-texts.com/tarot/pkt/img/waac.jpg", arcana: "minor", suit: "wands", number: 1  },
   { id: "two-wands",     name: "Two of Wands",     img: "https://www.sacred-texts.com/tarot/pkt/img/wa02.jpg", arcana: "minor", suit: "wands", number: 2  },
   { id: "three-wands",   name: "Three of Wands",   img: "https://www.sacred-texts.com/tarot/pkt/img/wa03.jpg", arcana: "minor", suit: "wands", number: 3  },
   { id: "four-wands",    name: "Four of Wands",    img: "https://www.sacred-texts.com/tarot/pkt/img/wa04.jpg", arcana: "minor", suit: "wands", number: 4  },
@@ -46,7 +46,7 @@ const CARDS = [
   { id: "king-wands",    name: "King of Wands",    img: "https://www.sacred-texts.com/tarot/pkt/img/waki.jpg", arcana: "minor", suit: "wands", number: 14 },
 
   /* ── Minor Arcana — Cups (14 cards) ── */
-  { id: "ace-cups",     name: "Ace of Cups",     img: "https://www.sacred-texts.com/tarot/pkt/img/cu01.jpg", arcana: "minor", suit: "cups", number: 1  },
+  { id: "ace-cups",     name: "Ace of Cups",     img: "https://www.sacred-texts.com/tarot/pkt/img/cuac.jpg", arcana: "minor", suit: "cups", number: 1  },
   { id: "two-cups",     name: "Two of Cups",     img: "https://www.sacred-texts.com/tarot/pkt/img/cu02.jpg", arcana: "minor", suit: "cups", number: 2  },
   { id: "three-cups",   name: "Three of Cups",   img: "https://www.sacred-texts.com/tarot/pkt/img/cu03.jpg", arcana: "minor", suit: "cups", number: 3  },
   { id: "four-cups",    name: "Four of Cups",    img: "https://www.sacred-texts.com/tarot/pkt/img/cu04.jpg", arcana: "minor", suit: "cups", number: 4  },
@@ -62,7 +62,7 @@ const CARDS = [
   { id: "king-cups",    name: "King of Cups",    img: "https://www.sacred-texts.com/tarot/pkt/img/cuki.jpg", arcana: "minor", suit: "cups", number: 14 },
 
   /* ── Minor Arcana — Swords (14 cards) ── */
-  { id: "ace-swords",     name: "Ace of Swords",     img: "https://www.sacred-texts.com/tarot/pkt/img/sw01.jpg", arcana: "minor", suit: "swords", number: 1  },
+  { id: "ace-swords",     name: "Ace of Swords",     img: "https://www.sacred-texts.com/tarot/pkt/img/swac.jpg", arcana: "minor", suit: "swords", number: 1  },
   { id: "two-swords",     name: "Two of Swords",     img: "https://www.sacred-texts.com/tarot/pkt/img/sw02.jpg", arcana: "minor", suit: "swords", number: 2  },
   { id: "three-swords",   name: "Three of Swords",   img: "https://www.sacred-texts.com/tarot/pkt/img/sw03.jpg", arcana: "minor", suit: "swords", number: 3  },
   { id: "four-swords",    name: "Four of Swords",    img: "https://www.sacred-texts.com/tarot/pkt/img/sw04.jpg", arcana: "minor", suit: "swords", number: 4  },
@@ -78,7 +78,7 @@ const CARDS = [
   { id: "king-swords",    name: "King of Swords",    img: "https://www.sacred-texts.com/tarot/pkt/img/swki.jpg", arcana: "minor", suit: "swords", number: 14 },
 
   /* ── Minor Arcana — Pentacles (14 cards) ── */
-  { id: "ace-pentacles",     name: "Ace of Pentacles",     img: "https://www.sacred-texts.com/tarot/pkt/img/pe01.jpg", arcana: "minor", suit: "pentacles", number: 1  },
+  { id: "ace-pentacles",     name: "Ace of Pentacles",     img: "https://www.sacred-texts.com/tarot/pkt/img/peac.jpg", arcana: "minor", suit: "pentacles", number: 1  },
   { id: "two-pentacles",     name: "Two of Pentacles",     img: "https://www.sacred-texts.com/tarot/pkt/img/pe02.jpg", arcana: "minor", suit: "pentacles", number: 2  },
   { id: "three-pentacles",   name: "Three of Pentacles",   img: "https://www.sacred-texts.com/tarot/pkt/img/pe03.jpg", arcana: "minor", suit: "pentacles", number: 3  },
   { id: "four-pentacles",    name: "Four of Pentacles",    img: "https://www.sacred-texts.com/tarot/pkt/img/pe04.jpg", arcana: "minor", suit: "pentacles", number: 4  },
@@ -110,9 +110,25 @@ console.assert(CARDS.length === 78, `Expected 78 cards, got ${CARDS.length}`);
 let deck = [];        // cards remaining in deck (shuffle order)
 let drawnCards = [];  // cards currently on the tapete
 
+/* ── getActiveDeckSource ── */
+function getActiveDeckSource() {
+  const modeEl = document.getElementById('deckMode');
+  const mode = modeEl ? modeEl.value : 'full';
+  if (mode === 'major') {
+    return CARDS.filter(c => c.arcana === 'major');
+  }
+  return CARDS;
+}
+
+/* ── reversedEnabled ── */
+function reversedEnabled() {
+  const el = document.getElementById('reversedToggle');
+  return el ? el.checked : true;
+}
+
 /* ── initDeck ── */
 function initDeck() {
-  deck = [...window.TAROT.CARDS];
+  deck = [...getActiveDeckSource()];
   drawnCards = [];
 
   const deckCountEl = document.getElementById('deckCount');
@@ -159,7 +175,7 @@ function drawCard() {
   }
 
   const card = deck.pop();
-  const reversed = Math.random() < 0.2;
+  const reversed = reversedEnabled() && Math.random() < 0.2;
 
   drawnCards.push({ ...card, reversed });
 
@@ -226,6 +242,44 @@ function returnCardToDeck(cardElement) {
   if (deckCountEl) deckCountEl.textContent = deck.length;
 }
 
+/* ── Topic state ── */
+let activeTopic = null;  // 'amor' | 'trabajo' | 'familia' | 'amigos' | null
+
+function setActiveTopic(topic) {
+  activeTopic = (activeTopic === topic) ? null : topic;
+  document.querySelectorAll('.topic').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.topic === activeTopic);
+  });
+}
+
+function getActiveTopic() {
+  return activeTopic;
+}
+
+/* ── Yes/No interpretation ── */
+const YES_IDS  = new Set(['fool','magician','empress','emperor','lovers','chariot','strength','wheel-fortune','temperance','star','sun','world','judgement']);
+const NO_IDS   = new Set(['hanged-man','death','devil','tower','moon']);
+const MAYBE_IDS= new Set(['high-priestess','hierophant','hermit','justice']);
+
+function getCardAnswer(card, reversed) {
+  let verdict;
+  if (YES_IDS.has(card.id))         verdict = 'yes';
+  else if (NO_IDS.has(card.id))     verdict = 'no';
+  else if (MAYBE_IDS.has(card.id))  verdict = 'maybe';
+  else if (card.number === 1)       verdict = 'yes';                  // aces
+  else if (card.suit === 'wands')   verdict = 'yes';
+  else if (card.suit === 'cups')    verdict = [5, 8].includes(card.number) ? 'no' : 'yes';
+  else if (card.suit === 'swords')  verdict = [2, 6].includes(card.number) ? 'maybe' : 'no';
+  else if (card.suit === 'pentacles') verdict = [5].includes(card.number) ? 'no' : 'maybe';
+  else verdict = 'maybe';
+
+  if (reversed) {
+    if (verdict === 'yes')      verdict = 'no';
+    else if (verdict === 'no')  verdict = 'yes';
+  }
+  return verdict;
+}
+
 /* ── Re-expose everything on window.TAROT ── */
 window.TAROT = {
   CARDS,
@@ -234,11 +288,24 @@ window.TAROT = {
   drawCard,
   createCardElement,
   returnCardToDeck,
+  setActiveTopic,
+  getActiveTopic,
+  getCardAnswer,
+  drawnCards: () => drawnCards,
 };
 
 /* ── Event listeners ── */
 document.getElementById('btnShuffle').addEventListener('click', shuffleDeck);
 document.getElementById('btnDraw').addEventListener('click', drawCard);
+
+const deckModeEl = document.getElementById('deckMode');
+if (deckModeEl) {
+  deckModeEl.addEventListener('change', initDeck);
+}
+
+document.querySelectorAll('.topic').forEach(btn => {
+  btn.addEventListener('click', () => setActiveTopic(btn.dataset.topic));
+});
 
 // Initialize on load
 document.addEventListener('DOMContentLoaded', initDeck);

@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tarott — Rider-Waite Tarot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Cinzel:wght@500;600&display=swap" />
   <!-- Theme: swap between style.css (Arcane Vault) and styles2.css (Crystal Void) -->
   <link rel="stylesheet" id="theme" href="styles2.css" />
 </head>
@@ -16,6 +19,25 @@
   <div class="controls">
     <button id="btnShuffle">Barajar</button>
     <button id="btnDraw">Tirar carta</button>
+    <label class="ctrl-toggle">
+      <span>Baraja:</span>
+      <select id="deckMode">
+        <option value="full">Completa (78)</option>
+        <option value="major">Arcanos mayores (22)</option>
+      </select>
+    </label>
+    <label class="ctrl-toggle">
+      <input type="checkbox" id="reversedToggle" checked />
+      <span>Cartas invertidas</span>
+    </label>
+  </div>
+
+  <div class="topics" id="topics">
+    <span class="topics-label">Tema:</span>
+    <button class="topic" data-topic="amor">Amor</button>
+    <button class="topic" data-topic="trabajo">Trabajo</button>
+    <button class="topic" data-topic="familia">Familia</button>
+    <button class="topic" data-topic="amigos">Amigos</button>
   </div>
 
   <main class="tapete">
@@ -34,8 +56,19 @@
   <div class="context-menu" id="contextMenu">
     <ul>
       <li id="ctxSearch">Buscar carta</li>
+      <li id="ctxAnswer">Responder</li>
       <li id="ctxReturn">Devolver a la baraja</li>
     </ul>
+  </div>
+
+  <div class="answer-overlay" id="answerOverlay" hidden>
+    <div class="answer-box">
+      <button class="answer-close" id="answerClose" aria-label="Cerrar">×</button>
+      <div class="answer-topic" id="answerTopic"></div>
+      <div class="answer-card" id="answerCard"></div>
+      <div class="answer-verdict" id="answerVerdict"></div>
+      <div class="answer-detail" id="answerDetail"></div>
+    </div>
   </div>
 
   <script src="app.js"></script>

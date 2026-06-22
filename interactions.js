@@ -27,7 +27,9 @@
   let cardsContainer;
   let contextMenu;
   let ctxSearch;
+  let ctxAnswer;
   let ctxReturn;
+  let answerOverlay;
 
   /* ── Helpers ── */
 
@@ -217,17 +219,65 @@
      CONTEXT MENU ACTIONS
      ================================================================ */
 
+  const TOPIC_LABELS = {
+    amor:     'Amor',
+    trabajo:  'Trabajo',
+    familia:  'Familia',
+    amigos:   'Amigos',
+  };
+
+  const VERDICT_TEXT = {
+    yes:   { label: 'SÍ',     detail: 'Las energías favorecen esta cuestión.' },
+    no:    { label: 'NO',     detail: 'Las energías no acompañan en este momento.' },
+    maybe: { label: 'QUIZÁS', detail: 'Hay matices: medita la pregunta y vuelve a tirar.' },
+  };
+
   function onCtxSearch() {
     if (!contextCard) return;
     const cardData = window.TAROT.CARDS.find(
       function (c) { return c.id === contextCard.dataset.id; }
     );
     if (cardData) {
-      const url = 'https://www.google.com/search?q=tarot+' +
-        encodeURIComponent(cardData.name) + '+Rider+Waite';
+      const topic = window.TAROT.getActiveTopic && window.TAROT.getActiveTopic();
+      let query = 'tarot ' + cardData.name + ' Rider Waite';
+      if (contextCard.dataset.reversed === 'true') query += ' invertida';
+      if (topic) query += ' ' + topic;
+      query += ' significado';
+      const url = 'https://www.google.com/search?q=' + encodeURIComponent(query);
       window.open(url, '_blank');
     }
     hideContextMenu();
+  }
+
+  function onCtxAnswer() {
+    if (!contextCard) return;
+    const cardData = window.TAROT.CARDS.find(
+      function (c) { return c.id === contextCard.dataset.id; }
+    );
+    if (!cardData) { hideContextMenu(); return; }
+
+    const reversed = contextCard.dataset.reversed === 'true';
+    const verdict  = window.TAROT.getCardAnswer(cardData, reversed);
+    const topic    = window.TAROT.getActiveTopic && window.TAROT.getActiveTopic();
+    showAnswer(cardData, reversed, verdict, topic);
+    hideContextMenu();
+  }
+
+  function showAnswer(card, reversed, verdict, topic) {
+    const v = VERDICT_TEXT[verdict];
+    document.getElementById('answerTopic').textContent =
+      topic ? 'Sobre ' + TOPIC_LABELS[topic] : 'Respuesta general';
+    document.getElementById('answerCard').textContent =
+      card.name + (reversed ? ' (invertida)' : '');
+    const verdictEl = document.getElementById('answerVerdict');
+    verdictEl.textContent = v.label;
+    verdictEl.dataset.verdict = verdict;
+    document.getElementById('answerDetail').textContent = v.detail;
+    answerOverlay.hidden = false;
+  }
+
+  function hideAnswer() {
+    if (answerOverlay) answerOverlay.hidden = true;
   }
 
   function onCtxReturn() {
@@ -255,7 +305,9 @@
     cardsContainer = document.getElementById('cardsContainer');
     contextMenu    = document.getElementById('contextMenu');
     ctxSearch      = document.getElementById('ctxSearch');
+    ctxAnswer      = document.getElementById('ctxAnswer');
     ctxReturn      = document.getElementById('ctxReturn');
+    answerOverlay  = document.getElementById('answerOverlay');
 
     // --- Mouse drag (delegated on container) ---
     cardsContainer.addEventListener('mousedown', onMouseDown);
@@ -275,7 +327,20 @@
 
     // --- Context menu item clicks ---
     ctxSearch.addEventListener('click', onCtxSearch);
+    ctxAnswer.addEventListener('click', onCtxAnswer);
     ctxReturn.addEventListener('click', onCtxReturn);
+
+    // --- Answer overlay close ---
+    const closeBtn = document.getElementById('answerClose');
+    if (closeBtn) closeBtn.addEventListener('click', hideAnswer);
+    if (answerOverlay) {
+      answerOverlay.addEventListener('click', function (e) {
+        if (e.target === answerOverlay) hideAnswer();
+      });
+    }
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') hideAnswer();
+    });
 
     // --- Dismiss context menu on outside click ---
     document.addEventListener('click', onDocumentClick);

@@ -4,43 +4,44 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600&display=swap');
 
 /* ============================================================
-   CSS Custom Properties — "Arcane Vault"
-   Balatro neon + mystical cosmos
+   CSS Custom Properties — "Arcane Vault" (classic dusk)
+   Aubergine night + antique gold + dusty rose + parchment
    ============================================================ */
 :root {
-  /* Void palette */
-  --bg-void:          #07050f;
-  --bg-surface:       #0e0b1e;
-  --bg-tapete:        #0a0717;
+  /* Night palette */
+  --bg-void:          #0c0818;
+  --bg-surface:       #15102a;
+  --bg-tapete:        #0e0a1f;
 
-  /* Neon accents */
-  --neon-pink:        #ff2d78;
-  --neon-violet:      #9b4dff;
-  --neon-cyan:        #00e5ff;
-  --neon-gold:        #ffcc00;
+  /* Accents — classic mystic, no neon */
+  --neon-pink:        #a45a78;   /* dusty rose (still used by existing rules) */
+  --neon-violet:      #6a4a8a;   /* muted aubergine */
+  --neon-cyan:        #7a9aa6;   /* faded teal */
+  --neon-gold:        #c8a55b;   /* antique gold */
 
-  /* Glow versions */
-  --glow-pink:        rgba(255, 45, 120, 0.65);
-  --glow-violet:      rgba(155, 77, 255, 0.65);
-  --glow-cyan:        rgba(0, 229, 255, 0.5);
-  --glow-gold:        rgba(255, 204, 0, 0.6);
+  /* Glow versions — much softer */
+  --glow-pink:        rgba(164, 90, 120, 0.4);
+  --glow-violet:      rgba(106, 74, 138, 0.4);
+  --glow-cyan:        rgba(122, 154, 166, 0.3);
+  --glow-gold:        rgba(200, 165, 91, 0.45);
 
   /* Text */
-  --text-bright:      #f5f0ff;
-  --text-muted:       #6a5a9a;
+  --text-bright:      #ece2cc;   /* parchment */
+  --text-muted:       #8a7a9a;
 
-  /* Glassmorphism */
-  --glass-bg:         rgba(10, 7, 25, 0.88);
-  --glass-border:     rgba(155, 77, 255, 0.35);
+  /* Glass + borders */
+  --glass-bg:         rgba(15, 10, 30, 0.9);
+  --glass-border:     rgba(200, 165, 91, 0.3);
 
   /* Card dimensions */
   --card-width:       120px;
   --card-height:      210px;
-  --card-radius:      10px;
+  --card-radius:      8px;
 
   /* Typography */
-  --font-display:     'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-display:     'Cinzel', 'Cinzel Decorative', Georgia, serif;
   --font-ui:          'Cinzel', Georgia, serif;
+  --font-serif:       'Cormorant Garamond', Georgia, 'Times New Roman', serif;
 }
 
 /* ============================================================
@@ -76,7 +77,7 @@ body {
     rgba(7, 5, 15, 1) 0%,
     rgba(14, 11, 30, 0.92) 100%
   );
-  border-bottom: 1px solid rgba(155, 77, 255, 0.2);
+  border-bottom: 1px solid rgba(106, 74, 138, 0.2);
   text-align: center;
   flex-shrink: 0;
   z-index: 50;
@@ -105,20 +106,11 @@ body {
 .site-title {
   font-family: var(--font-display);
   font-size: 1.55rem;
-  font-weight: 700;
-  letter-spacing: 0.55em;
+  font-weight: 600;
+  letter-spacing: 0.45em;
   text-transform: uppercase;
-  background: linear-gradient(
-    90deg,
-    var(--neon-pink)   0%,
-    var(--neon-violet) 40%,
-    var(--neon-cyan)   75%,
-    var(--neon-gold)   100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0 0 14px rgba(155, 77, 255, 0.75));
+  color: var(--neon-gold);
+  filter: drop-shadow(0 0 10px rgba(200, 165, 91, 0.35));
 }
 
 /* ============================================================
@@ -128,6 +120,7 @@ body {
   width: 100%;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   gap: 20px;
@@ -148,7 +141,7 @@ button {
   font-family: var(--font-ui);
   padding: 10px 32px;
   border: 1.5px solid var(--neon-violet);
-  background: rgba(155, 77, 255, 0.07);
+  background: rgba(106, 74, 138, 0.07);
   color: var(--neon-violet);
   border-radius: 6px;
   letter-spacing: 0.14em;
@@ -178,11 +171,11 @@ button::before {
 button:hover {
   border-color: var(--neon-pink);
   color: var(--text-bright);
-  background: rgba(255, 45, 120, 0.1);
+  background: rgba(164, 90, 120, 0.1);
   box-shadow:
-    0 0 10px rgba(255, 45, 120, 0.55),
-    0 0 28px rgba(255, 45, 120, 0.2),
-    inset 0 0 12px rgba(255, 45, 120, 0.04);
+    0 0 10px rgba(164, 90, 120, 0.55),
+    0 0 28px rgba(164, 90, 120, 0.2),
+    inset 0 0 12px rgba(164, 90, 120, 0.04);
 }
 
 button:hover::before {
@@ -195,7 +188,239 @@ button:active {
 
 button:focus {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(155, 77, 255, 0.45);
+  box-shadow: 0 0 0 2px rgba(106, 74, 138, 0.45);
+}
+
+/* ============================================================
+   Control toggles — selector + checkbox (Balatro ghost style)
+   ============================================================ */
+.ctrl-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--neon-violet);
+  cursor: pointer;
+  user-select: none;
+}
+
+.ctrl-toggle select {
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  background: rgba(106, 74, 138, 0.07);
+  color: var(--neon-violet);
+  border: 1.5px solid var(--neon-violet);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.ctrl-toggle select:hover {
+  border-color: var(--neon-pink);
+  color: var(--text-bright);
+  background: rgba(164, 90, 120, 0.1);
+}
+
+.ctrl-toggle select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(106, 74, 138, 0.45);
+}
+
+.ctrl-toggle input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--neon-violet);
+  background: rgba(106, 74, 138, 0.07);
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.ctrl-toggle input[type="checkbox"]:checked {
+  background: var(--neon-pink);
+  border-color: var(--neon-pink);
+  box-shadow: 0 0 10px rgba(164, 90, 120, 0.55);
+}
+
+.ctrl-toggle input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 0px;
+  width: 5px;
+  height: 10px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.ctrl-toggle input[type="checkbox"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(106, 74, 138, 0.45);
+}
+
+/* ============================================================
+   Topic chips
+   ============================================================ */
+.topics {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 24px;
+  background: var(--glass-bg);
+  border-bottom: 1px solid var(--glass-border);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  flex-shrink: 0;
+  z-index: 100;
+  position: relative;
+}
+
+.topics-label {
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--neon-violet);
+  opacity: 0.7;
+  margin-right: 4px;
+}
+
+.topic {
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 6px 18px;
+  background: rgba(106, 74, 138, 0.07);
+  color: var(--neon-violet);
+  border: 1.5px solid var(--neon-violet);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.22s ease;
+}
+
+.topic:hover {
+  border-color: var(--neon-pink);
+  color: var(--text-bright);
+  background: rgba(164, 90, 120, 0.1);
+  box-shadow: 0 0 10px rgba(164, 90, 120, 0.45);
+}
+
+.topic.active {
+  background: var(--neon-pink);
+  color: #fff;
+  border-color: var(--neon-pink);
+  box-shadow: 0 0 14px rgba(164, 90, 120, 0.7);
+}
+
+/* ============================================================
+   Answer overlay (Responder)
+   ============================================================ */
+.answer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 4, 28, 0.78);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.answer-overlay[hidden] { display: none; }
+
+.answer-box {
+  position: relative;
+  min-width: 280px;
+  max-width: 92vw;
+  padding: 30px 36px 28px;
+  background: var(--glass-bg);
+  border: 1.5px solid var(--neon-violet);
+  border-radius: 14px;
+  box-shadow:
+    0 0 30px rgba(106, 74, 138, 0.5),
+    0 0 60px rgba(164, 90, 120, 0.25),
+    inset 0 0 30px rgba(106, 74, 138, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  text-align: center;
+  font-family: var(--font-ui);
+  color: var(--text-bright);
+}
+
+.answer-close {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--neon-violet);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: none;
+  overflow: visible;
+}
+.answer-close:hover { color: var(--neon-pink); background: transparent; box-shadow: none; }
+.answer-close::before { display: none; }
+
+.answer-topic {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  text-transform: none;
+  color: var(--neon-gold);
+  opacity: 0.85;
+  margin-bottom: 4px;
+}
+
+.answer-card {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-bright);
+  margin-bottom: 18px;
+}
+
+.answer-verdict {
+  font-family: var(--font-display);
+  font-size: 2.8rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  margin-bottom: 16px;
+}
+.answer-verdict[data-verdict="yes"]   { color: var(--neon-gold); text-shadow: 0 0 22px var(--glow-gold); }
+.answer-verdict[data-verdict="no"]    { color: var(--neon-pink); text-shadow: 0 0 22px var(--glow-pink); }
+.answer-verdict[data-verdict="maybe"] { color: var(--text-bright); text-shadow: 0 0 22px rgba(236, 226, 204, 0.4); }
+
+.answer-detail {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  color: var(--text-bright);
+  opacity: 0.9;
+  line-height: 1.55;
+  max-width: 34ch;
+  margin: 0 auto;
 }
 
 /* ============================================================
@@ -210,13 +435,13 @@ button:focus {
 
   background-image:
     /* Nebula: warm pink glow top-right */
-    radial-gradient(ellipse 55% 38% at 80% 18%, rgba(255, 45, 120, 0.13) 0%, transparent 70%),
+    radial-gradient(ellipse 55% 38% at 80% 18%, rgba(164, 90, 120, 0.13) 0%, transparent 70%),
     /* Nebula: electric violet glow bottom-left */
-    radial-gradient(ellipse 48% 55% at 15% 82%, rgba(155, 77, 255, 0.13) 0%, transparent 65%),
+    radial-gradient(ellipse 48% 55% at 15% 82%, rgba(106, 74, 138, 0.13) 0%, transparent 65%),
     /* Nebula: cyan breath center */
-    radial-gradient(ellipse 32% 28% at 55% 52%, rgba(0, 229, 255, 0.055) 0%, transparent 55%),
+    radial-gradient(ellipse 32% 28% at 55% 52%, rgba(122, 154, 166, 0.055) 0%, transparent 55%),
     /* Nebula: gold dust top-left */
-    radial-gradient(ellipse 28% 18% at 8% 12%, rgba(255, 204, 0, 0.055) 0%, transparent 50%),
+    radial-gradient(ellipse 28% 18% at 8% 12%, rgba(200, 165, 91, 0.055) 0%, transparent 50%),
     /* Stars — white, dense, small */
     radial-gradient(circle, rgba(255, 255, 255, 0.95) 1px, transparent 1px),
     /* Stars — white, medium density */
@@ -282,7 +507,7 @@ button:focus {
   width: var(--card-width);
   height: var(--card-height);
   border-radius: var(--card-radius);
-  border: 1.5px solid rgba(155, 77, 255, 0.65);
+  border: 1.5px solid rgba(106, 74, 138, 0.65);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -296,15 +521,15 @@ button:focus {
       45deg,
       transparent,
       transparent 10px,
-      rgba(155, 77, 255, 0.06) 10px,
-      rgba(155, 77, 255, 0.06) 11px
+      rgba(106, 74, 138, 0.06) 10px,
+      rgba(106, 74, 138, 0.06) 11px
     ),
     repeating-linear-gradient(
       -45deg,
       transparent,
       transparent 10px,
-      rgba(255, 45, 120, 0.04) 10px,
-      rgba(255, 45, 120, 0.04) 11px
+      rgba(164, 90, 120, 0.04) 10px,
+      rgba(164, 90, 120, 0.04) 11px
     ),
     var(--bg-surface);
 
@@ -321,7 +546,7 @@ button:focus {
   position: absolute;
   inset: 0;
   border-radius: var(--card-radius);
-  border: 1px solid rgba(155, 77, 255, 0.35);
+  border: 1px solid rgba(106, 74, 138, 0.35);
   background: rgba(14, 11, 28, 0.9);
   transform: translate(4px, 6px);
   z-index: -1;
@@ -333,7 +558,7 @@ button:focus {
   position: absolute;
   inset: 0;
   border-radius: var(--card-radius);
-  border: 1px solid rgba(155, 77, 255, 0.18);
+  border: 1px solid rgba(106, 74, 138, 0.18);
   background: rgba(10, 7, 20, 0.85);
   transform: translate(8px, 12px);
   z-index: -2;
@@ -343,16 +568,16 @@ button:focus {
 @keyframes deckPulse {
   0%, 100% {
     box-shadow:
-      0 0 14px rgba(155, 77, 255, 0.65),
-      0 0 32px rgba(155, 77, 255, 0.28),
-      0 0 60px rgba(155, 77, 255, 0.1),
+      0 0 14px rgba(106, 74, 138, 0.65),
+      0 0 32px rgba(106, 74, 138, 0.28),
+      0 0 60px rgba(106, 74, 138, 0.1),
       0 18px 55px rgba(0, 0, 0, 0.75);
   }
   50% {
     box-shadow:
-      0 0 18px rgba(255, 45, 120, 0.7),
-      0 0 40px rgba(255, 45, 120, 0.32),
-      0 0 70px rgba(255, 45, 120, 0.12),
+      0 0 18px rgba(164, 90, 120, 0.7),
+      0 0 40px rgba(164, 90, 120, 0.32),
+      0 0 70px rgba(164, 90, 120, 0.12),
       0 18px 55px rgba(0, 0, 0, 0.75);
   }
 }
@@ -374,7 +599,7 @@ button:focus {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  filter: drop-shadow(0 0 10px rgba(155, 77, 255, 0.85));
+  filter: drop-shadow(0 0 10px rgba(106, 74, 138, 0.85));
 }
 
 /* ============================================================
@@ -382,18 +607,19 @@ button:focus {
    ============================================================ */
 .deck-count {
   display: inline-block;
-  font-family: var(--font-ui);
-  font-size: 0.71rem;
-  letter-spacing: 0.1em;
-  color: var(--neon-violet);
-  background: rgba(155, 77, 255, 0.08);
-  border: 1px solid rgba(155, 77, 255, 0.4);
-  border-radius: 20px;
-  padding: 3px 12px;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--neon-gold);
+  background: rgba(15, 10, 30, 0.7);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  padding: 3px 14px;
   min-width: 3rem;
   text-align: center;
-  box-shadow: 0 0 8px rgba(155, 77, 255, 0.3);
-  transition: color 0.3s, box-shadow 0.3s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 /* ============================================================
@@ -425,9 +651,9 @@ button:focus {
     transform 0.18s ease;
 
   box-shadow:
-    inset 0 0 0 1px rgba(155, 77, 255, 0.22),
+    inset 0 0 0 1px rgba(106, 74, 138, 0.22),
     0 6px 22px rgba(0, 0, 0, 0.75),
-    0 0 10px rgba(155, 77, 255, 0.12);
+    0 0 10px rgba(106, 74, 138, 0.12);
 }
 
 /* Holographic shimmer overlay — revealed on hover */
@@ -439,8 +665,8 @@ button:focus {
     105deg,
     transparent        15%,
     rgba(255,255,255,0.04) 38%,
-    rgba(155, 77,255,0.13) 50%,
-    rgba(255, 45,120,0.09) 62%,
+    rgba(106, 74,138,0.13) 50%,
+    rgba(164, 90,120,0.09) 62%,
     transparent        85%
   );
   opacity: 0;
@@ -461,9 +687,9 @@ button:focus {
 .tarot-card:hover {
   transform: translateY(-5px) scale(1.025);
   box-shadow:
-    inset 0 0 0 1.5px rgba(255, 45, 120, 0.55),
-    0 0 14px rgba(255, 45, 120, 0.55),
-    0 0 36px rgba(155, 77, 255, 0.32),
+    inset 0 0 0 1.5px rgba(164, 90, 120, 0.55),
+    0 0 14px rgba(164, 90, 120, 0.55),
+    0 0 36px rgba(106, 74, 138, 0.32),
     0 18px 52px rgba(0, 0, 0, 0.88);
 }
 
@@ -471,7 +697,7 @@ button:focus {
   opacity: 1;
 }
 
-/* Reversed — rotated 180° */
+/* Reversed — rotated 180Â° */
 .tarot-card.reversed {
   transform: rotate(180deg);
 }
@@ -485,9 +711,9 @@ button:focus {
   cursor: grabbing;
   transform: scale(1.05) rotate(2deg);
   box-shadow:
-    inset 0 0 0 1.5px rgba(0, 229, 255, 0.55),
-    0 0 18px rgba(0, 229, 255, 0.55),
-    0 0 45px rgba(0, 229, 255, 0.25),
+    inset 0 0 0 1.5px rgba(122, 154, 166, 0.55),
+    0 0 18px rgba(122, 154, 166, 0.55),
+    0 0 45px rgba(122, 154, 166, 0.25),
     0 28px 70px rgba(0, 0, 0, 0.92);
 }
 
@@ -503,21 +729,21 @@ button:focus {
     transform: translateY(-45px) rotate(-10deg);
     opacity: 0;
     box-shadow:
-      0 0 40px rgba(255, 45, 120, 0.9),
-      0 0 80px rgba(255, 45, 120, 0.4);
+      0 0 40px rgba(164, 90, 120, 0.9),
+      0 0 80px rgba(164, 90, 120, 0.4);
   }
   55% {
     transform: translateY(7px) rotate(2deg);
     opacity: 1;
     box-shadow:
-      0 0 20px rgba(155, 77, 255, 0.6),
+      0 0 20px rgba(106, 74, 138, 0.6),
       0 12px 36px rgba(0, 0, 0, 0.75);
   }
   100% {
     transform: translateY(0) rotate(0deg);
     opacity: 1;
     box-shadow:
-      inset 0 0 0 1px rgba(155, 77, 255, 0.22),
+      inset 0 0 0 1px rgba(106, 74, 138, 0.22),
       0 6px 22px rgba(0, 0, 0, 0.75);
   }
 }
@@ -527,21 +753,21 @@ button:focus {
     transform: translateY(-45px) rotate(170deg);
     opacity: 0;
     box-shadow:
-      0 0 40px rgba(255, 45, 120, 0.9),
-      0 0 80px rgba(255, 45, 120, 0.4);
+      0 0 40px rgba(164, 90, 120, 0.9),
+      0 0 80px rgba(164, 90, 120, 0.4);
   }
   55% {
     transform: translateY(7px) rotate(182deg);
     opacity: 1;
     box-shadow:
-      0 0 20px rgba(155, 77, 255, 0.6),
+      0 0 20px rgba(106, 74, 138, 0.6),
       0 12px 36px rgba(0, 0, 0, 0.75);
   }
   100% {
     transform: translateY(0) rotate(180deg);
     opacity: 1;
     box-shadow:
-      inset 0 0 0 1px rgba(155, 77, 255, 0.22),
+      inset 0 0 0 1px rgba(106, 74, 138, 0.22),
       0 6px 22px rgba(0, 0, 0, 0.75);
   }
 }
@@ -572,9 +798,9 @@ button:focus {
 .deck.shuffling {
   animation: deckShake 0.65s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
   box-shadow:
-    0 0 35px rgba(255, 45, 120, 0.95),
-    0 0 70px rgba(255, 45, 120, 0.55),
-    0 0 110px rgba(155, 77, 255, 0.3),
+    0 0 35px rgba(164, 90, 120, 0.95),
+    0 0 70px rgba(164, 90, 120, 0.55),
+    0 0 110px rgba(106, 74, 138, 0.3),
     0 22px 65px rgba(0, 0, 0, 0.75) !important;
 }
 
@@ -585,11 +811,11 @@ button:focus {
   position: fixed;
   display: none;
   background: var(--glass-bg);
-  border: 1px solid rgba(155, 77, 255, 0.5);
+  border: 1px solid rgba(106, 74, 138, 0.5);
   border-radius: 10px;
   min-width: 194px;
   box-shadow:
-    0 0 24px rgba(155, 77, 255, 0.32),
+    0 0 24px rgba(106, 74, 138, 0.32),
     0 18px 44px rgba(0, 0, 0, 0.82);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
@@ -632,7 +858,7 @@ button:focus {
 }
 
 .context-menu li:hover {
-  background: rgba(155, 77, 255, 0.16);
+  background: rgba(106, 74, 138, 0.16);
   color: var(--neon-violet);
 }
 
