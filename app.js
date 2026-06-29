@@ -1,11 +1,10 @@
 /* =============================================================
-   app.js — Task 1: Card Data
-   All 78 Rider-Waite Tarot cards.
-   Images sourced from https://www.sacred-texts.com/tarot/pkt/img/
+   app.js — Card Data + Deck Logic
+   Multi-deck registry: Rider-Waite, Marseille, Naipes Españolas.
    ============================================================= */
 
-const CARDS = [
-  /* ── Major Arcana (22 cards, numbers 0–21) ── */
+/* ── Rider-Waite (78 cards, image-based) ── */
+const CARDS_RIDER = [
   { id: "fool",            name: "The Fool",           img: "https://www.sacred-texts.com/tarot/pkt/img/ar00.jpg", arcana: "major", suit: null, number: 0  },
   { id: "magician",        name: "The Magician",        img: "https://www.sacred-texts.com/tarot/pkt/img/ar01.jpg", arcana: "major", suit: null, number: 1  },
   { id: "high-priestess",  name: "The High Priestess",  img: "https://www.sacred-texts.com/tarot/pkt/img/ar02.jpg", arcana: "major", suit: null, number: 2  },
@@ -29,7 +28,6 @@ const CARDS = [
   { id: "judgement",       name: "Judgement",           img: "https://www.sacred-texts.com/tarot/pkt/img/ar20.jpg", arcana: "major", suit: null, number: 20 },
   { id: "world",           name: "The World",           img: "https://www.sacred-texts.com/tarot/pkt/img/ar21.jpg", arcana: "major", suit: null, number: 21 },
 
-  /* ── Minor Arcana — Wands (14 cards) ── */
   { id: "ace-wands",     name: "Ace of Wands",     img: "https://www.sacred-texts.com/tarot/pkt/img/waac.jpg", arcana: "minor", suit: "wands", number: 1  },
   { id: "two-wands",     name: "Two of Wands",     img: "https://www.sacred-texts.com/tarot/pkt/img/wa02.jpg", arcana: "minor", suit: "wands", number: 2  },
   { id: "three-wands",   name: "Three of Wands",   img: "https://www.sacred-texts.com/tarot/pkt/img/wa03.jpg", arcana: "minor", suit: "wands", number: 3  },
@@ -45,7 +43,6 @@ const CARDS = [
   { id: "queen-wands",   name: "Queen of Wands",   img: "https://www.sacred-texts.com/tarot/pkt/img/waqu.jpg", arcana: "minor", suit: "wands", number: 13 },
   { id: "king-wands",    name: "King of Wands",    img: "https://www.sacred-texts.com/tarot/pkt/img/waki.jpg", arcana: "minor", suit: "wands", number: 14 },
 
-  /* ── Minor Arcana — Cups (14 cards) ── */
   { id: "ace-cups",     name: "Ace of Cups",     img: "https://www.sacred-texts.com/tarot/pkt/img/cuac.jpg", arcana: "minor", suit: "cups", number: 1  },
   { id: "two-cups",     name: "Two of Cups",     img: "https://www.sacred-texts.com/tarot/pkt/img/cu02.jpg", arcana: "minor", suit: "cups", number: 2  },
   { id: "three-cups",   name: "Three of Cups",   img: "https://www.sacred-texts.com/tarot/pkt/img/cu03.jpg", arcana: "minor", suit: "cups", number: 3  },
@@ -61,7 +58,6 @@ const CARDS = [
   { id: "queen-cups",   name: "Queen of Cups",   img: "https://www.sacred-texts.com/tarot/pkt/img/cuqu.jpg", arcana: "minor", suit: "cups", number: 13 },
   { id: "king-cups",    name: "King of Cups",    img: "https://www.sacred-texts.com/tarot/pkt/img/cuki.jpg", arcana: "minor", suit: "cups", number: 14 },
 
-  /* ── Minor Arcana — Swords (14 cards) ── */
   { id: "ace-swords",     name: "Ace of Swords",     img: "https://www.sacred-texts.com/tarot/pkt/img/swac.jpg", arcana: "minor", suit: "swords", number: 1  },
   { id: "two-swords",     name: "Two of Swords",     img: "https://www.sacred-texts.com/tarot/pkt/img/sw02.jpg", arcana: "minor", suit: "swords", number: 2  },
   { id: "three-swords",   name: "Three of Swords",   img: "https://www.sacred-texts.com/tarot/pkt/img/sw03.jpg", arcana: "minor", suit: "swords", number: 3  },
@@ -77,7 +73,6 @@ const CARDS = [
   { id: "queen-swords",   name: "Queen of Swords",   img: "https://www.sacred-texts.com/tarot/pkt/img/swqu.jpg", arcana: "minor", suit: "swords", number: 13 },
   { id: "king-swords",    name: "King of Swords",    img: "https://www.sacred-texts.com/tarot/pkt/img/swki.jpg", arcana: "minor", suit: "swords", number: 14 },
 
-  /* ── Minor Arcana — Pentacles (14 cards) ── */
   { id: "ace-pentacles",     name: "Ace of Pentacles",     img: "https://www.sacred-texts.com/tarot/pkt/img/peac.jpg", arcana: "minor", suit: "pentacles", number: 1  },
   { id: "two-pentacles",     name: "Two of Pentacles",     img: "https://www.sacred-texts.com/tarot/pkt/img/pe02.jpg", arcana: "minor", suit: "pentacles", number: 2  },
   { id: "three-pentacles",   name: "Three of Pentacles",   img: "https://www.sacred-texts.com/tarot/pkt/img/pe03.jpg", arcana: "minor", suit: "pentacles", number: 3  },
@@ -94,39 +89,145 @@ const CARDS = [
   { id: "king-pentacles",    name: "King of Pentacles",    img: "https://www.sacred-texts.com/tarot/pkt/img/peki.jpg", arcana: "minor", suit: "pentacles", number: 14 },
 ];
 
-/* Expose on window for other scripts to consume */
-window.TAROT = { CARDS };
+/* ── Marseille majors (CSS-rendered, French names) ── */
+const MARSEILLE_MAJORS = [
+  { id: "m-mat",        name: "Le Mat",            roman: "",     number: 0  },
+  { id: "m-bateleur",   name: "Le Bateleur",       roman: "I",    number: 1  },
+  { id: "m-papesse",    name: "La Papesse",        roman: "II",   number: 2  },
+  { id: "m-imperatrice",name: "L'Impératrice",     roman: "III",  number: 3  },
+  { id: "m-empereur",   name: "L'Empereur",        roman: "IIII", number: 4  },
+  { id: "m-pape",       name: "Le Pape",           roman: "V",    number: 5  },
+  { id: "m-amoureux",   name: "L'Amoureux",        roman: "VI",   number: 6  },
+  { id: "m-chariot",    name: "Le Chariot",        roman: "VII",  number: 7  },
+  { id: "m-justice",    name: "La Justice",        roman: "VIII", number: 8  },
+  { id: "m-ermite",     name: "L'Ermite",          roman: "VIIII",number: 9  },
+  { id: "m-roue",       name: "La Roue de Fortune",roman: "X",    number: 10 },
+  { id: "m-force",      name: "La Force",          roman: "XI",   number: 11 },
+  { id: "m-pendu",      name: "Le Pendu",          roman: "XII",  number: 12 },
+  { id: "m-arcane13",   name: "Arcane sans nom",   roman: "XIII", number: 13 },
+  { id: "m-temperance", name: "Tempérance",        roman: "XIIII",number: 14 },
+  { id: "m-diable",     name: "Le Diable",         roman: "XV",   number: 15 },
+  { id: "m-maison",     name: "La Maison Dieu",    roman: "XVI",  number: 16 },
+  { id: "m-etoile",     name: "L'Étoile",          roman: "XVII", number: 17 },
+  { id: "m-lune",       name: "La Lune",           roman: "XVIII",number: 18 },
+  { id: "m-soleil",     name: "Le Soleil",         roman: "XVIIII",number: 19},
+  { id: "m-jugement",   name: "Le Jugement",       roman: "XX",   number: 20 },
+  { id: "m-monde",      name: "Le Monde",          roman: "XXI",  number: 21 },
+].map(c => ({ ...c, render: "styled", variant: "marseille", arcana: "major", suit: null }));
 
-/* Quick sanity check in dev console */
-console.assert(CARDS.length === 78, `Expected 78 cards, got ${CARDS.length}`);
+const MARSEILLE_SUITS = [
+  { key: "batons",  fr: "Bâtons",  symbol: "🪄" },
+  { key: "coupes",  fr: "Coupes",  symbol: "🏆" },
+  { key: "epees",   fr: "Épées",   symbol: "⚔" },
+  { key: "deniers", fr: "Deniers", symbol: "🪙" },
+];
+const MARSEILLE_RANKS = [
+  { n: 1,  fr: "As" },
+  { n: 2,  fr: "II" },
+  { n: 3,  fr: "III" },
+  { n: 4,  fr: "IIII" },
+  { n: 5,  fr: "V" },
+  { n: 6,  fr: "VI" },
+  { n: 7,  fr: "VII" },
+  { n: 8,  fr: "VIII" },
+  { n: 9,  fr: "VIIII" },
+  { n: 10, fr: "X" },
+  { n: 11, fr: "Valet" },
+  { n: 12, fr: "Cavalier" },
+  { n: 13, fr: "Reine" },
+  { n: 14, fr: "Roy" },
+];
+const MARSEILLE_MINORS = MARSEILLE_SUITS.flatMap(s =>
+  MARSEILLE_RANKS.map(r => ({
+    id: `m-${r.n}-${s.key}`,
+    name: `${r.fr} de ${s.fr}`,
+    roman: r.fr,
+    symbol: s.symbol,
+    suit: s.key,
+    number: r.n,
+    arcana: "minor",
+    render: "styled",
+    variant: "marseille",
+  }))
+);
+const CARDS_MARSEILLE = [...MARSEILLE_MAJORS, ...MARSEILLE_MINORS];
+
+/* ── Naipes Españolas (40 cards, no majors) ── */
+const NAIPES_SUITS = [
+  { key: "oros",     es: "Oros",     symbol: "●" },
+  { key: "copas",    es: "Copas",    symbol: "♥" },
+  { key: "espadas",  es: "Espadas",  symbol: "✦" },
+  { key: "bastos",   es: "Bastos",   symbol: "✚" },
+];
+const NAIPES_RANKS = [
+  { n: 1,  es: "As" },
+  { n: 2,  es: "2" },
+  { n: 3,  es: "3" },
+  { n: 4,  es: "4" },
+  { n: 5,  es: "5" },
+  { n: 6,  es: "6" },
+  { n: 7,  es: "7" },
+  { n: 10, es: "Sota" },
+  { n: 11, es: "Caballo" },
+  { n: 12, es: "Rey" },
+];
+const CARDS_NAIPES = NAIPES_SUITS.flatMap(s =>
+  NAIPES_RANKS.map(r => ({
+    id: `n-${r.n}-${s.key}`,
+    name: `${r.es} de ${s.es}`,
+    roman: r.es,
+    symbol: s.symbol,
+    suit: s.key,
+    number: r.n,
+    arcana: "minor",
+    render: "styled",
+    variant: "naipes",
+  }))
+);
+
+/* ── Deck registry ── */
+const DECKS = {
+  rider:     { name: "Rider-Waite",       cards: CARDS_RIDER,     hasMajors: true  },
+  marseille: { name: "Tarot de Marsella", cards: CARDS_MARSEILLE, hasMajors: true  },
+  naipes:    { name: "Naipes Españolas",  cards: CARDS_NAIPES,    hasMajors: false },
+};
+
+/* Expose */
+window.TAROT = { CARDS: CARDS_RIDER, DECKS };
+
+console.assert(CARDS_RIDER.length === 78, `Expected 78 Rider cards, got ${CARDS_RIDER.length}`);
+console.assert(CARDS_MARSEILLE.length === 78, `Expected 78 Marseille cards, got ${CARDS_MARSEILLE.length}`);
+console.assert(CARDS_NAIPES.length === 40, `Expected 40 Naipes cards, got ${CARDS_NAIPES.length}`);
 
 /* =============================================================
-   app.js — Task 2: Deck Logic
-   State management, shuffle, draw, card element creation,
-   return-to-deck, and event listeners.
+   Deck Logic
    ============================================================= */
 
-/* ── State ── */
-let deck = [];        // cards remaining in deck (shuffle order)
-let drawnCards = [];  // cards currently on the tapete
+let deck = [];
+let drawnCards = [];
 
-/* ── getActiveDeckSource ── */
-function getActiveDeckSource() {
-  const modeEl = document.getElementById('deckMode');
-  const mode = modeEl ? modeEl.value : 'full';
-  if (mode === 'major') {
-    return CARDS.filter(c => c.arcana === 'major');
-  }
-  return CARDS;
+function getActiveVariant() {
+  const el = document.getElementById('deckVariant');
+  const v = el ? el.value : 'rider';
+  return DECKS[v] ? v : 'rider';
 }
 
-/* ── reversedEnabled ── */
+function getActiveDeckSource() {
+  const variant = getActiveVariant();
+  const deckDef = DECKS[variant];
+  const modeEl = document.getElementById('deckMode');
+  const mode = modeEl ? modeEl.value : 'full';
+  if (mode === 'major' && deckDef.hasMajors) {
+    return deckDef.cards.filter(c => c.arcana === 'major');
+  }
+  return deckDef.cards;
+}
+
 function reversedEnabled() {
   const el = document.getElementById('reversedToggle');
   return el ? el.checked : true;
 }
 
-/* ── initDeck ── */
 function initDeck() {
   deck = [...getActiveDeckSource()];
   drawnCards = [];
@@ -138,25 +239,23 @@ function initDeck() {
   if (container) {
     container.querySelectorAll('.tarot-card').forEach(el => el.remove());
   }
+
+  if (window.TAROT && typeof window.TAROT.onDrawnChanged === 'function') {
+    window.TAROT.onDrawnChanged();
+  }
 }
 
-/* ── shuffleDeck ── */
 function shuffleDeck() {
-  // Fisher-Yates in-place shuffle
   for (let i = deck.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [deck[i], deck[j]] = [deck[j], deck[i]];
   }
 
-  // 3% chance: a card falls while shuffling
   if (Math.random() < 0.03 && deck.length > 0) {
     const fallenEl = drawCard();
-    if (fallenEl) {
-      fallenEl.classList.add('fell');
-    }
+    if (fallenEl) fallenEl.classList.add('fell');
   }
 
-  // Animate the deck element
   const deckEl = document.getElementById('deck');
   if (deckEl) {
     deckEl.classList.add('shuffling');
@@ -167,8 +266,7 @@ function shuffleDeck() {
   if (deckCountEl) deckCountEl.textContent = deck.length;
 }
 
-/* ── drawCard ── */
-function drawCard() {
+function drawCard(targetPos) {
   if (deck.length === 0) {
     alert('La baraja está vacía');
     return null;
@@ -179,71 +277,98 @@ function drawCard() {
 
   drawnCards.push({ ...card, reversed });
 
-  const cardEl = createCardElement(card, reversed);
+  const cardEl = createCardElement(card, reversed, targetPos);
   const container = document.getElementById('cardsContainer');
   if (container) container.appendChild(cardEl);
 
   const deckCountEl = document.getElementById('deckCount');
   if (deckCountEl) deckCountEl.textContent = deck.length;
 
+  if (window.TAROT && typeof window.TAROT.onDrawnChanged === 'function') {
+    window.TAROT.onDrawnChanged();
+  }
+
   return cardEl;
 }
 
-/* ── createCardElement ── */
-function createCardElement(card, reversed) {
+function createCardElement(card, reversed, targetPos) {
   const container = document.getElementById('cardsContainer');
   const containerRect = container
     ? container.getBoundingClientRect()
     : { width: 300, height: 400 };
 
-  // Center of the container plus a small random offset
-  const offsetX = (Math.random() * 100) - 50;  // ±50 px
-  const offsetY = (Math.random() * 60) - 30;   // ±30 px
-  const left = containerRect.width / 2 + offsetX;
-  const top  = containerRect.height / 2 + offsetY;
+  let left, top;
+  if (targetPos) {
+    left = targetPos.x;
+    top  = targetPos.y;
+  } else {
+    const offsetX = (Math.random() * 100) - 50;
+    const offsetY = (Math.random() * 60) - 30;
+    left = containerRect.width / 2 + offsetX;
+    top  = containerRect.height / 2 + offsetY;
+  }
 
   const el = document.createElement('div');
   el.className = 'tarot-card' + (reversed ? ' reversed' : '');
+  if (card.variant) el.classList.add('variant-' + card.variant);
+  if (card.render === 'styled') el.classList.add('styled-card');
   el.dataset.id = card.id;
   el.dataset.reversed = reversed;
 
-  // JS-set positioning (only acceptable use of inline styles per spec)
   el.style.left = left + 'px';
   el.style.top  = top  + 'px';
-
-  // Store initial position for drag logic (Task 3)
   el.dataset.startX = left;
   el.dataset.startY = top;
 
-  const img = document.createElement('img');
-  img.src = card.img;
-  img.alt = card.name;
-  img.draggable = false;
-
-  el.appendChild(img);
+  if (card.render === 'styled') {
+    el.innerHTML = `
+      <div class="card-face">
+        <span class="card-roman">${card.roman || ''}</span>
+        <span class="card-symbol">${card.symbol || '✦'}</span>
+        <span class="card-title">${card.name}</span>
+      </div>
+    `;
+  } else {
+    const img = document.createElement('img');
+    img.src = card.img;
+    img.alt = card.name;
+    img.draggable = false;
+    el.appendChild(img);
+  }
   return el;
 }
 
-/* ── returnCardToDeck ── */
 function returnCardToDeck(cardElement) {
   const id = cardElement.dataset.id;
-  const card = window.TAROT.CARDS.find(c => c.id === id);
+  const source = getActiveDeckSource();
+  const card = source.find(c => c.id === id)
+            || DECKS.rider.cards.find(c => c.id === id)
+            || DECKS.marseille.cards.find(c => c.id === id)
+            || DECKS.naipes.cards.find(c => c.id === id);
 
-  if (card) {
-    deck.unshift(card);  // return to top (beginning) of deck
-  }
+  if (card) deck.unshift(card);
 
-  // Remove from drawnCards tracking array
   drawnCards = drawnCards.filter(c => c.id !== id);
 
   cardElement.remove();
 
   const deckCountEl = document.getElementById('deckCount');
   if (deckCountEl) deckCountEl.textContent = deck.length;
+
+  if (window.TAROT && typeof window.TAROT.onDrawnChanged === 'function') {
+    window.TAROT.onDrawnChanged();
+  }
 }
 
-/* ── Topic state ── */
-let activeTopic = null;  // 'amor' | 'trabajo' | 'familia' | 'amigos' | null
+function clearTable() {
+  const container = document.getElementById('cardsContainer');
+  if (!container) return;
+  const cards = container.querySelectorAll('.tarot-card');
+  cards.forEach(el => returnCardToDeck(el));
+}
+
+/* ── Topics ── */
+let activeTopic = null;
 
 function setActiveTopic(topic) {
   activeTopic = (activeTopic === topic) ? null : topic;
@@ -266,11 +391,11 @@ function getCardAnswer(card, reversed) {
   if (YES_IDS.has(card.id))         verdict = 'yes';
   else if (NO_IDS.has(card.id))     verdict = 'no';
   else if (MAYBE_IDS.has(card.id))  verdict = 'maybe';
-  else if (card.number === 1)       verdict = 'yes';                  // aces
-  else if (card.suit === 'wands')   verdict = 'yes';
-  else if (card.suit === 'cups')    verdict = [5, 8].includes(card.number) ? 'no' : 'yes';
-  else if (card.suit === 'swords')  verdict = [2, 6].includes(card.number) ? 'maybe' : 'no';
-  else if (card.suit === 'pentacles') verdict = [5].includes(card.number) ? 'no' : 'maybe';
+  else if (card.number === 1)       verdict = 'yes';
+  else if (card.suit === 'wands' || card.suit === 'batons' || card.suit === 'bastos') verdict = 'yes';
+  else if (card.suit === 'cups' || card.suit === 'coupes' || card.suit === 'copas')   verdict = [5, 8].includes(card.number) ? 'no' : 'yes';
+  else if (card.suit === 'swords' || card.suit === 'epees' || card.suit === 'espadas') verdict = [2, 6].includes(card.number) ? 'maybe' : 'no';
+  else if (card.suit === 'pentacles' || card.suit === 'deniers' || card.suit === 'oros') verdict = [5].includes(card.number) ? 'no' : 'maybe';
   else verdict = 'maybe';
 
   if (reversed) {
@@ -280,32 +405,67 @@ function getCardAnswer(card, reversed) {
   return verdict;
 }
 
-/* ── Re-expose everything on window.TAROT ── */
+/* ── Lookup helpers across decks ── */
+function findCardAnywhere(id) {
+  for (const k of Object.keys(DECKS)) {
+    const c = DECKS[k].cards.find(c => c.id === id);
+    if (c) return c;
+  }
+  return null;
+}
+
+/* ── Expose ── */
 window.TAROT = {
-  CARDS,
+  get CARDS() { return getActiveDeckSource(); },
+  DECKS,
   initDeck,
   shuffleDeck,
   drawCard,
   createCardElement,
   returnCardToDeck,
+  clearTable,
   setActiveTopic,
   getActiveTopic,
   getCardAnswer,
+  findCardAnywhere,
+  getActiveVariant,
   drawnCards: () => drawnCards,
 };
 
 /* ── Event listeners ── */
 document.getElementById('btnShuffle').addEventListener('click', shuffleDeck);
-document.getElementById('btnDraw').addEventListener('click', drawCard);
+document.getElementById('btnDraw').addEventListener('click', () => drawCard());
+
+const btnClear = document.getElementById('btnClear');
+if (btnClear) btnClear.addEventListener('click', clearTable);
+
+const btnDaily = document.getElementById('btnDaily');
+if (btnDaily) {
+  btnDaily.addEventListener('click', () => {
+    clearTable();
+    shuffleDeck();
+    setTimeout(() => drawCard(), 700);
+  });
+}
 
 const deckModeEl = document.getElementById('deckMode');
-if (deckModeEl) {
-  deckModeEl.addEventListener('change', initDeck);
+if (deckModeEl) deckModeEl.addEventListener('change', initDeck);
+
+const deckVariantEl = document.getElementById('deckVariant');
+if (deckVariantEl) {
+  deckVariantEl.addEventListener('change', () => {
+    const v = DECKS[deckVariantEl.value];
+    const modeEl = document.getElementById('deckMode');
+    if (modeEl) {
+      modeEl.disabled = !v.hasMajors;
+      if (!v.hasMajors) modeEl.value = 'full';
+    }
+    initDeck();
+  });
 }
 
 document.querySelectorAll('.topic').forEach(btn => {
   btn.addEventListener('click', () => setActiveTopic(btn.dataset.topic));
 });
 
-// Initialize on load
 document.addEventListener('DOMContentLoaded', initDeck);

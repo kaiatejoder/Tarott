@@ -13,32 +13,113 @@
 <body>
 
   <header class="site-header">
+    <button id="navToggle" class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
     <h1 class="site-title">Tarott</h1>
+    <button id="spreadToggle" class="spread-toggle" aria-label="Abrir tirada" aria-expanded="false">
+      <span class="spread-toggle-icon">◫</span>
+    </button>
   </header>
 
-  <div class="controls">
-    <button id="btnShuffle">Barajar</button>
-    <button id="btnDraw">Tirar carta</button>
-    <label class="ctrl-toggle">
-      <span>Baraja:</span>
-      <select id="deckMode">
-        <option value="full">Completa (78)</option>
-        <option value="major">Arcanos mayores (22)</option>
-      </select>
-    </label>
-    <label class="ctrl-toggle">
-      <input type="checkbox" id="reversedToggle" checked />
-      <span>Cartas invertidas</span>
-    </label>
-  </div>
+  <div class="nav-backdrop" id="navBackdrop" hidden></div>
 
-  <div class="topics" id="topics">
-    <span class="topics-label">Tema:</span>
-    <button class="topic" data-topic="amor">Amor</button>
-    <button class="topic" data-topic="trabajo">Trabajo</button>
-    <button class="topic" data-topic="familia">Familia</button>
-    <button class="topic" data-topic="amigos">Amigos</button>
-  </div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true">
+    <div class="nav-drawer-head">
+      <span class="nav-drawer-title">Menú</span>
+      <button class="nav-close" id="navClose" aria-label="Cerrar">×</button>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Acciones</div>
+      <button id="btnShuffle">Barajar</button>
+      <button id="btnDraw">Tirar carta</button>
+      <button id="btnDaily">Carta del día</button>
+      <button id="btnClear">Limpiar mesa</button>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Baraja</div>
+      <label class="ctrl-toggle">
+        <span>Mazo:</span>
+        <select id="deckVariant">
+          <option value="rider">Rider-Waite</option>
+          <option value="marseille">Tarot de Marsella</option>
+          <option value="naipes">Naipes Españolas</option>
+        </select>
+      </label>
+      <label class="ctrl-toggle">
+        <span>Cantidad:</span>
+        <select id="deckMode">
+          <option value="full">Completa</option>
+          <option value="major">Arcanos mayores</option>
+        </select>
+      </label>
+      <label class="ctrl-toggle">
+        <input type="checkbox" id="reversedToggle" checked />
+        <span>Cartas invertidas</span>
+      </label>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Tema</div>
+      <div class="topics" id="topics">
+        <button class="topic" data-topic="amor">Amor</button>
+        <button class="topic" data-topic="trabajo">Trabajo</button>
+        <button class="topic" data-topic="familia">Familia</button>
+        <button class="topic" data-topic="amigos">Amigos</button>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Personalizar</div>
+      <label class="ctrl-toggle file-toggle">
+        <span>Reverso baraja:</span>
+        <input type="file" id="backImageInput" accept="image/*" />
+      </label>
+      <label class="ctrl-toggle file-toggle">
+        <span>Tapete:</span>
+        <input type="file" id="matImageInput" accept="image/*" />
+      </label>
+      <button id="btnResetCustom">Restaurar por defecto</button>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Notion</div>
+      <a class="nav-link" href="https://app.notion.com/p/384bb17d94a481faa008c3978e6c840b?pvs=1" target="_blank" rel="noopener">🃏 Tarot</a>
+      <a class="nav-link" href="https://app.notion.com/p/384bb17d94a4814085accfb546271552?pvs=1" target="_blank" rel="noopener">🔮 Diario</a>
+      <a class="nav-link" href="https://app.notion.com/p/c36b22bac8a74dac99c9ba4d1ded9aeb?pvs=1" target="_blank" rel="noopener">🃏 Cartas</a>
+      <a class="nav-link" href="https://app.notion.com/p/d3c53eea51d84bb4a717aa9092e339d2?pvs=1" target="_blank" rel="noopener">🔲 Spreads</a>
+      <a class="nav-link" href="https://app.notion.com/p/cc56cf8438994e3ea263fc8f8ae4257a?pvs=1" target="_blank" rel="noopener">🔮 Tiradas</a>
+      <a class="nav-link" href="https://app.notion.com/p/36bc266a43db4f509e6e3f3c85961a45?pvs=1" target="_blank" rel="noopener">📖 Registro</a>
+    </div>
+  </aside>
+
+  <aside class="spread-panel" id="spreadPanel" aria-hidden="true">
+    <div class="spread-panel-head">
+      <span class="spread-panel-title">Tirada</span>
+      <button class="nav-close" id="spreadClose" aria-label="Cerrar">×</button>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Plantilla</div>
+      <label class="ctrl-toggle">
+        <select id="spreadTemplate">
+          <option value="free">Libre</option>
+          <option value="one">Una carta</option>
+          <option value="three">Tres cartas (Pasado · Presente · Futuro)</option>
+          <option value="cross">Cruz Celta (10)</option>
+          <option value="horseshoe">Herradura (7)</option>
+        </select>
+      </label>
+      <button id="btnApplyTemplate">Aplicar plantilla</button>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Cartas en mesa <span class="spread-count" id="spreadCount">0</span></div>
+      <ul class="spread-list" id="spreadList"></ul>
+    </div>
+  </aside>
 
   <main class="tapete">
 
@@ -51,12 +132,15 @@
 
     <div id="cardsContainer"></div>
 
+    <div class="spread-positions" id="spreadPositions"></div>
+
   </main>
 
   <div class="context-menu" id="contextMenu">
     <ul>
-      <li id="ctxSearch">Buscar carta</li>
       <li id="ctxAnswer">Responder</li>
+      <li id="ctxNotion">Ver en Notion</li>
+      <li id="ctxSearch">Buscar en Google</li>
       <li id="ctxReturn">Devolver a la baraja</li>
     </ul>
   </div>
